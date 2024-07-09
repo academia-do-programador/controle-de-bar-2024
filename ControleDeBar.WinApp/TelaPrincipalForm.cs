@@ -3,8 +3,10 @@ using ControleDeBar.Dominio.ModuloGarcom;
 using ControleDeBar.Dominio.ModuloMesa;
 using ControleDeBar.Dominio.ModuloProduto;
 using ControleDeBar.Infra.Orm.Compartilhado;
+using ControleDeBar.Infra.Orm.ModuloGarcom;
 using ControleDeBar.Infra.Orm.ModuloMesa;
 using ControleDeBar.WinApp.Compartilhado;
+using ControleDeBar.WinApp.ModuloGarcom;
 using ControleDeBar.WinApp.ModuloMesa;
 
 namespace ControleDeBar.WinApp
@@ -29,6 +31,7 @@ namespace ControleDeBar.WinApp
             dbContext = new ControleDeBarDbContext();
 
             repositorioMesa = new RepositorioMesaEmOrm(dbContext);
+            repositorioGarcom = new RepositorioGarcomEmOrm(dbContext);
 
             DateTime dataAtual = DateTime.Now;
 
@@ -49,6 +52,7 @@ namespace ControleDeBar.WinApp
 
         private void garconsMenuItem_Click(object sender, EventArgs e)
         {
+            controlador = new ControladorGarcom(repositorioGarcom);
 
             ConfigurarTelaPrincipal(controlador);
         }

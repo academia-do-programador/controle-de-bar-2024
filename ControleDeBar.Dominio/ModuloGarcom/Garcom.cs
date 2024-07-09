@@ -1,5 +1,4 @@
 ﻿using ControleDeBar.Dominio.Compartilhado;
-using ControleDeBar.Dominio.ModuloMesa;
 
 namespace ControleDeBar.Dominio.ModuloGarcom
 {
@@ -16,11 +15,6 @@ namespace ControleDeBar.Dominio.ModuloGarcom
             CPF = cpf;
         }
 
-        public void Atender(Mesa mesa)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void AtualizarInformacoes(EntidadeBase entidadeAtualizada)
         {
             Garcom garcomAtualizado = (Garcom)entidadeAtualizada;
@@ -35,6 +29,9 @@ namespace ControleDeBar.Dominio.ModuloGarcom
 
             if (string.IsNullOrEmpty(Nome.Trim()))
                 erros.Add("O campo \"Nome\" é obrigatório!");
+
+            if (string.IsNullOrEmpty(CPF.Trim()))
+                erros.Add("O campo \"CPF\" é obrigatório!");
 
             return erros;
         }
