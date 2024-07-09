@@ -5,9 +5,11 @@ using ControleDeBar.Dominio.ModuloProduto;
 using ControleDeBar.Infra.Orm.Compartilhado;
 using ControleDeBar.Infra.Orm.ModuloGarcom;
 using ControleDeBar.Infra.Orm.ModuloMesa;
+using ControleDeBar.Infra.Orm.ModuloProduto;
 using ControleDeBar.WinApp.Compartilhado;
 using ControleDeBar.WinApp.ModuloGarcom;
 using ControleDeBar.WinApp.ModuloMesa;
+using ControleDeBar.WinApp.ModuloProduto;
 
 namespace ControleDeBar.WinApp
 {
@@ -32,6 +34,7 @@ namespace ControleDeBar.WinApp
 
             repositorioMesa = new RepositorioMesaEmOrm(dbContext);
             repositorioGarcom = new RepositorioGarcomEmOrm(dbContext);
+            repositorioProduto = new RepositorioProdutoEmOrm(dbContext);
 
             DateTime dataAtual = DateTime.Now;
 
@@ -59,6 +62,7 @@ namespace ControleDeBar.WinApp
 
         private void produtosMenuItem_Click(object sender, EventArgs e)
         {
+            controlador = new ControladorProduto(repositorioProduto);
 
             ConfigurarTelaPrincipal(controlador);
         }
