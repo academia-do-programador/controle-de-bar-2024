@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ControleDeBar.Dominio.Estabelecimento.Bar">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Mesa" Type="ControleDeBar.Dominio.ModuloMesa.Mesa" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.312" />
+        <Point X="2.5" Y="1.312" />
+        <Point X="2.5" Y="3" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAEAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAE=</HashCode>
+      <FileName>ModuloBar\Bar.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Mesa" />
+      <Property Name="Garcom" />
+      <Property Name="Produto" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ControleDeBar.Dominio.ModuloConta.Conta">
+    <Position X="1.75" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIEAAAAAAAAAAAAAABAAAAAAAAEAAAA=</HashCode>
+      <FileName>ModuloConta\Conta.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Pedido" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ControleDeBar.Dominio.ModuloGarcom.Garcom">
+    <Position X="4.25" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ModuloGarcom\Garcom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ControleDeBar.Dominio.ModuloMesa.Mesa">
+    <Position X="1.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAA=</HashCode>
+      <FileName>ModuloMesa\Mesa.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Conta" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ControleDeBar.Dominio.ModuloPedido.Pedido">
+    <Position X="4.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAE=</HashCode>
+      <FileName>ModuloPedido\Pedido.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Garcom" />
+      <Property Name="Produto" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ControleDeBar.Dominio.ModuloProduto.Produto">
+    <Position X="6.75" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAAA=</HashCode>
+      <FileName>ModuloProduto\Produto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
