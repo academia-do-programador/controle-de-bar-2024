@@ -2,6 +2,7 @@ using ControleDeBar.Dominio.ModuloConta;
 using ControleDeBar.Dominio.ModuloGarcom;
 using ControleDeBar.Dominio.ModuloMesa;
 using ControleDeBar.Dominio.ModuloProduto;
+using ControleDeBar.Infra.Orm.Compartilhado;
 using ControleDeBar.WinApp.Compartilhado;
 using ControleDeBar.WinApp.ModuloMesa;
 
@@ -12,6 +13,7 @@ namespace ControleDeBar.WinApp
         public static TelaPrincipalForm Instancia { get; private set; }
 
         ControladorBase controlador;
+        ControleDeBarDbContext dbContext;
 
         IRepositorioMesa repositorioMesa;
         IRepositorioGarcom repositorioGarcom;
@@ -22,6 +24,8 @@ namespace ControleDeBar.WinApp
         {
             InitializeComponent();
             Instancia = this;
+
+            dbContext = new ControleDeBarDbContext();
 
             DateTime dataAtual = DateTime.Now;
 
