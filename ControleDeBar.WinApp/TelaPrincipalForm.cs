@@ -3,6 +3,7 @@ using ControleDeBar.Dominio.ModuloGarcom;
 using ControleDeBar.Dominio.ModuloMesa;
 using ControleDeBar.Dominio.ModuloProduto;
 using ControleDeBar.WinApp.Compartilhado;
+using ControleDeBar.WinApp.ModuloMesa;
 
 namespace ControleDeBar.WinApp
 {
@@ -34,6 +35,7 @@ namespace ControleDeBar.WinApp
 
         private void mesasMenuItem_Click(object sender, EventArgs e)
         {
+            controlador = new ControladorMesa(repositorioMesa);
 
             ConfigurarTelaPrincipal(controlador);
         }
