@@ -3,6 +3,7 @@ using ControleDeBar.Dominio.ModuloGarcom;
 using ControleDeBar.Dominio.ModuloMesa;
 using ControleDeBar.Dominio.ModuloProduto;
 using ControleDeBar.Infra.Orm.Compartilhado;
+using ControleDeBar.Infra.Orm.ModuloMesa;
 using ControleDeBar.WinApp.Compartilhado;
 using ControleDeBar.WinApp.ModuloMesa;
 
@@ -26,6 +27,8 @@ namespace ControleDeBar.WinApp
             Instancia = this;
 
             dbContext = new ControleDeBarDbContext();
+
+            repositorioMesa = new RepositorioMesaEmOrm(dbContext);
 
             DateTime dataAtual = DateTime.Now;
 

@@ -29,6 +29,7 @@ namespace ControleDeBar.Dominio.ModuloMesa
             Mesa mesaAtualizada = (Mesa)registroAtualizado;
 
             Numero = mesaAtualizada.Numero;
+            Ocupada = mesaAtualizada.Ocupada;
         }
 
         public override List<string> Validar()
