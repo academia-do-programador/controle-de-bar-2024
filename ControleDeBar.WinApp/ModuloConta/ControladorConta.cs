@@ -158,7 +158,32 @@ namespace ControleDeBar.WinApp.ModuloConta
 
         public void Filtrar()
         {
+            TelaFiltroContasForm telaFiltro = new TelaFiltroContasForm();
 
+            DialogResult dialogResult = telaFiltro.ShowDialog();
+
+            if (dialogResult != DialogResult.OK) return;
+
+            TipoFiltroContaEnum filtroSelecionado = telaFiltro.FiltroSelecionado;
+
+            List<Conta> contasFiltradas;
+
+            switch (filtroSelecionado)
+            {
+                case TipoFiltroContaEnum.Abertas:
+                    contasFiltradas = repositorioConta.SelecionarContasEmAberto();
+                    break;
+
+                case TipoFiltroContaEnum.Fechadas:
+                    contasFiltradas = repositorioConta.SelecionarContasFechadas();
+                    break;
+
+                default:
+                    contasFiltradas = repositorioConta.SelecionarContas();
+                    break;
+            }
+
+            tabelaConta.AtualizarRegistros(contasFiltradas);
         }
 
         public void Visualizar()

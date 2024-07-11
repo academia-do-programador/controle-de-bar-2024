@@ -30,9 +30,9 @@
         {
             menu = new MenuStrip();
             cadastrosToolStripMenuItem = new ToolStripMenuItem();
-            produtosMenuItem = new ToolStripMenuItem();
-            garconsMenuItem = new ToolStripMenuItem();
             mesasMenuItem = new ToolStripMenuItem();
+            garconsMenuItem = new ToolStripMenuItem();
+            produtosMenuItem = new ToolStripMenuItem();
             contasMenuItem = new ToolStripMenuItem();
             toolbox = new ToolStrip();
             btnAdicionar = new ToolStripButton();
@@ -71,13 +71,13 @@
             cadastrosToolStripMenuItem.Size = new Size(86, 24);
             cadastrosToolStripMenuItem.Text = "Cadastros";
             // 
-            // produtosMenuItem
+            // mesasMenuItem
             // 
-            produtosMenuItem.Name = "produtosMenuItem";
-            produtosMenuItem.ShortcutKeys = Keys.F3;
-            produtosMenuItem.Size = new Size(161, 24);
-            produtosMenuItem.Text = "Produtos";
-            produtosMenuItem.Click += produtosMenuItem_Click;
+            mesasMenuItem.Name = "mesasMenuItem";
+            mesasMenuItem.ShortcutKeys = Keys.F1;
+            mesasMenuItem.Size = new Size(161, 24);
+            mesasMenuItem.Text = "Mesas";
+            mesasMenuItem.Click += mesasMenuItem_Click;
             // 
             // garconsMenuItem
             // 
@@ -87,13 +87,13 @@
             garconsMenuItem.Text = "Garçons";
             garconsMenuItem.Click += garconsMenuItem_Click;
             // 
-            // mesasMenuItem
+            // produtosMenuItem
             // 
-            mesasMenuItem.Name = "mesasMenuItem";
-            mesasMenuItem.ShortcutKeys = Keys.F1;
-            mesasMenuItem.Size = new Size(161, 24);
-            mesasMenuItem.Text = "Mesas";
-            mesasMenuItem.Click += mesasMenuItem_Click;
+            produtosMenuItem.Name = "produtosMenuItem";
+            produtosMenuItem.ShortcutKeys = Keys.F3;
+            produtosMenuItem.Size = new Size(161, 24);
+            produtosMenuItem.Text = "Produtos";
+            produtosMenuItem.Click += produtosMenuItem_Click;
             // 
             // contasMenuItem
             // 
@@ -170,6 +170,7 @@
             btnFiltrar.Padding = new Padding(5);
             btnFiltrar.Size = new Size(85, 38);
             btnFiltrar.Text = "Filtrar";
+            btnFiltrar.Click += btnFiltrar_Click;
             // 
             // toolStripSeparator4
             // 
@@ -187,6 +188,7 @@
             btnVisualizar.Padding = new Padding(5);
             btnVisualizar.Size = new Size(197, 38);
             btnVisualizar.Text = "Visualizar Faturamento";
+            btnVisualizar.Click += btnVisualizar_Click;
             // 
             // toolStripSeparator3
             // 

@@ -16,7 +16,14 @@ namespace ControleDeBar.WinApp.ModuloConta
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
+            if (rdbTodasContas.Checked)
+                FiltroSelecionado = TipoFiltroContaEnum.Todas;
 
+            else if (rdbContasAbertas.Checked)
+                FiltroSelecionado = TipoFiltroContaEnum.Abertas;
+
+            else if (rdbContasFechadas.Checked)
+                FiltroSelecionado = TipoFiltroContaEnum.Fechadas;
         }
     }
 }

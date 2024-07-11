@@ -97,6 +97,18 @@ namespace ControleDeBar.WinApp
             controlador.Excluir();
         }
 
+        private void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorFiltravel cF)
+                cF.Filtrar();
+        }
+
+        private void btnVisualizar_Click(object sender, EventArgs e)
+        {
+            if (controlador is IControladorVisualizavel cV)
+                cV.Visualizar();
+        }
+
         private void ConfigurarTelaPrincipal(ControladorBase controladorSelecionado)
         {
             lblTipoCadastro.Text = "Cadastro de " + controladorSelecionado.TipoCadastro;
