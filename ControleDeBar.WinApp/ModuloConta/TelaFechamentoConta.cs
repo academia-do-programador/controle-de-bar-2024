@@ -18,14 +18,22 @@ namespace ControleDeBar.WinApp.ModuloConta
             ConfigurarCamposExibicao();
         }
 
-        private void btnGravar_Click(object sender, EventArgs e)
+        private void btnFecharConta_Click(object sender, EventArgs e)
         {
-
+            Conta.Fechar();
         }
 
         private void ConfigurarCamposExibicao()
         {
+            txtId.Text = Conta.Id.ToString();
+            txtTitular.Text = Conta.Titular;
+            txtMesa.Text = Conta.Mesa.ToString();
+            txtGarcom.Text = Conta.Garcom.ToString();
 
+            foreach (Pedido pedido in Conta.Pedidos)
+                listPedidos.Items.Add(pedido);
+
+            lblValorTotal.Text = Conta.CalcularValorTotal().ToString("C2");
         }
     }
 }

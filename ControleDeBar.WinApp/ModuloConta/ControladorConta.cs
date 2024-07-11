@@ -112,7 +112,48 @@ namespace ControleDeBar.WinApp.ModuloConta
 
         public void FecharConta()
         {
+            int idSelecionado = tabelaConta.ObterRegistroSelecionado();
 
+            Conta contaSelecionada = repositorioConta.SelecionarPorId(idSelecionado);
+
+            if (contaSelecionada == null)
+            {
+                MessageBox.Show(
+                    "Você precisa selecionar um registro para executar esta ação!",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            if (!contaSelecionada.EstaAberta)
+            {
+                MessageBox.Show(
+                    "Esta conta já foi fechada!",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            TelaFechamentoConta telaFechamentoConta =
+                new TelaFechamentoConta(contaSelecionada);
+
+            DialogResult resultado = telaFechamentoConta.ShowDialog();
+
+            if (resultado != DialogResult.OK) return;
+
+            Conta contaFechada = telaFechamentoConta.Conta;
+
+            repositorioConta.AtualizarStatus(contaFechada);
+
+            CarregarRegistros();
+
+            TelaPrincipalForm
+                .Instancia
+                .AtualizarRodape($"Conta de \"{contaSelecionada.Titular}\" foi fechada com sucesso!");
         }
 
         public void Filtrar()
