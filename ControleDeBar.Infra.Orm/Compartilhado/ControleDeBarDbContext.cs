@@ -27,15 +27,15 @@ namespace ControleDeBar.Infra.Orm.Compartilhado
             {
                 mesaBuilder.ToTable("TBMesa");
 
-                mesaBuilder.Property(d => d.Id)
+                mesaBuilder.Property(m => m.Id)
                     .IsRequired()
                     .ValueGeneratedOnAdd();
 
-                mesaBuilder.Property(d => d.Numero)
+                mesaBuilder.Property(m => m.Numero)
                     .IsRequired()
                     .HasColumnType("varchar(200)");
 
-                mesaBuilder.Property(d => d.Ocupada)
+                mesaBuilder.Property(m => m.Ocupada)
                     .IsRequired()
                     .HasColumnType("bit");
             });
