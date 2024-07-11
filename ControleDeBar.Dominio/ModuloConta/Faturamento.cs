@@ -55,7 +55,7 @@
         private List<Conta> ObterContasPorDia(DateTime dataAtual)
         {
             return ContasFechadas
-                    .Where(c => c.Fechamento!.Value.Date == dataAtual.Date)
+                    .Where(c => c.Fechamento.Date == dataAtual.Date)
                     .ToList();
         }
 
@@ -64,8 +64,8 @@
             return ContasFechadas
                 .Where(conta =>
                 {
-                    return conta.Fechamento!.Value >= inicioSemana &&
-                        conta.Fechamento.Value <= fimSemana;
+                    return conta.Fechamento.Date >= inicioSemana &&
+                        conta.Fechamento.Date <= fimSemana;
                 })
                 .ToList();
         }
@@ -75,8 +75,8 @@
             return ContasFechadas
                 .Where(conta =>
                 {
-                    return conta.Fechamento!.Value >= inicioMes &&
-                        conta.Fechamento.Value <= fimMes;
+                    return conta.Fechamento.Date >= inicioMes &&
+                        conta.Fechamento.Date <= fimMes;
                 })
                 .ToList();
         }
