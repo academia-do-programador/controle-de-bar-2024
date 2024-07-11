@@ -79,7 +79,14 @@ namespace ControleDeBar.Infra.Orm.ModuloConta
 
         public List<Conta> SelecionarContasFaturamento()
         {
-            throw new NotImplementedException();
+            return dbContext.Contas
+                .Where(c => !c.EstaAberta)
+                .Include(c => c.Mesa)
+                .Include(c => c.Garcom)
+                .Include(c => c.Pedidos)
+                .ThenInclude(p => p.Produto)
+                .AsNoTracking()
+                .ToList();
         }
     }
 }

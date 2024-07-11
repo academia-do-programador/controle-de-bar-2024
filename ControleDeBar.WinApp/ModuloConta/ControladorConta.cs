@@ -188,7 +188,12 @@ namespace ControleDeBar.WinApp.ModuloConta
 
         public void Visualizar()
         {
+            List<Conta> contasFechadas = repositorioConta.SelecionarContasFaturamento();
 
+            TelaVisualizarFaturamentoForm telaFaturamento =
+                new TelaVisualizarFaturamentoForm(contasFechadas);
+
+            telaFaturamento.ShowDialog();
         }
 
         public override void CarregarRegistros()
