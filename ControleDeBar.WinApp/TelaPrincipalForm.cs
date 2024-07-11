@@ -3,6 +3,7 @@ using ControleDeBar.Dominio.ModuloGarcom;
 using ControleDeBar.Dominio.ModuloMesa;
 using ControleDeBar.Dominio.ModuloProduto;
 using ControleDeBar.Infra.Orm.Compartilhado;
+using ControleDeBar.Infra.Orm.ModuloConta;
 using ControleDeBar.Infra.Orm.ModuloGarcom;
 using ControleDeBar.Infra.Orm.ModuloMesa;
 using ControleDeBar.Infra.Orm.ModuloProduto;
@@ -36,6 +37,7 @@ namespace ControleDeBar.WinApp
             repositorioMesa = new RepositorioMesaEmOrm(dbContext);
             repositorioGarcom = new RepositorioGarcomEmOrm(dbContext);
             repositorioProduto = new RepositorioProdutoEmOrm(dbContext);
+            repositorioConta = new RepositorioContaEmOrm(dbContext);
 
             DateTime dataAtual = DateTime.Now;
 

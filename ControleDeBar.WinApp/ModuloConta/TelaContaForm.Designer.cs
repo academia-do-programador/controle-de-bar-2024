@@ -160,7 +160,7 @@
             btnRemoverProduto.TabIndex = 18;
             btnRemoverProduto.Text = "Remover";
             btnRemoverProduto.UseVisualStyleBackColor = true;
-            btnRemoverProduto.Click += btnRemoverProduto_Click;
+            btnRemoverProduto.Click += btnRemoverPedido_Click;
             // 
             // listPedidos
             // 
@@ -179,7 +179,7 @@
             btnAdicionarProduto.TabIndex = 5;
             btnAdicionarProduto.Text = "Adicionar";
             btnAdicionarProduto.UseVisualStyleBackColor = true;
-            btnAdicionarProduto.Click += btnAdicionarProduto_Click;
+            btnAdicionarProduto.Click += btnAdicionarPedido_Click;
             // 
             // cmbProdutos
             // 

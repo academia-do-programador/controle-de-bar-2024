@@ -35,12 +35,32 @@ namespace ControleDeBar.WinApp.ModuloConta
 
         public override void Adicionar()
         {
+            List<Mesa> mesas = repositorioMesa.SelecionarTodos();
 
+            List<Garcom> garcons = repositorioGarcom.SelecionarTodos();
+
+            List<Produto> produtos = repositorioProduto.SelecionarTodos();
+
+            TelaContaForm telaConta = new TelaContaForm(mesas, garcons, produtos);
+
+            DialogResult resultado = telaConta.ShowDialog();
+
+            if (resultado != DialogResult.OK) return;
+
+            Conta contaCriada = telaConta.Conta;
+
+            repositorioConta.Inserir(contaCriada);
+
+            CarregarRegistros();
+
+            TelaPrincipalForm
+                .Instancia
+                .AtualizarRodape($"Conta de \"{contaCriada.Titular}\" aberta com sucesso!");
         }
 
         public override void Editar()
         {
-            AdicionarProduto();
+            AtualizarProdutos();
         }
 
         public override void Excluir()
@@ -48,9 +68,46 @@ namespace ControleDeBar.WinApp.ModuloConta
             FecharConta();
         }
 
-        public void AdicionarProduto()
+        public void AtualizarProdutos()
         {
+            List<Mesa> mesas = repositorioMesa.SelecionarTodos();
 
+            List<Garcom> garcons = repositorioGarcom.SelecionarTodos();
+
+            List<Produto> produtos = repositorioProduto.SelecionarTodos();
+
+            int idSelecionado = tabelaConta.ObterRegistroSelecionado();
+
+            Conta contaSelecionada = repositorioConta.SelecionarPorId(idSelecionado);
+
+            if (contaSelecionada == null)
+            {
+                MessageBox.Show(
+                    "Você precisa selecionar um registro para executar esta ação!",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            TelaContaForm telaConta = new TelaContaForm(mesas, garcons, produtos);
+
+            telaConta.Conta = contaSelecionada;
+
+            DialogResult resultado = telaConta.ShowDialog();
+
+            if (resultado != DialogResult.OK) return;
+
+            Conta contaAtualizada = telaConta.Conta;
+
+            List<Pedido> pedidosRemovidos = telaConta.PedidosRemovidos;
+
+            repositorioConta.AtualizarPedidos(contaAtualizada, pedidosRemovidos);
+
+            TelaPrincipalForm
+                .Instancia
+                .AtualizarRodape($"Conta de \"{contaAtualizada.Titular}\" foi atualizada com sucesso!");
         }
 
         public void FecharConta()
