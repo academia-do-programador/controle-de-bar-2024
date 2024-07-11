@@ -3,9 +3,13 @@
     public interface IRepositorioConta
     {
         void Inserir(Conta conta);
-        void Editar(Conta contaOriginal, Conta contaEditada);
+        bool AtualizarPedidos(Conta contaAtualizada, List<Pedido> pedidosRemovidos);
+        void AtualizarStatus(Conta contaFechada);
 
+        Conta SelecionarPorId(int id);
+        List<Conta> SelecionarContas();
         List<Conta> SelecionarContasEmAberto();
-        List<Conta> SelecionarContasFechadas(DateTime data);
+        List<Conta> SelecionarContasFechadas();
+        List<Conta> SelecionarContasFaturamento();
     }
 }

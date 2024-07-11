@@ -11,6 +11,7 @@ namespace ControleDeBar.Dominio.ModuloConta
         public Mesa Mesa { get; set; }
         public Garcom Garcom { get; set; }
         public DateTime Abertura { get; set; }
+        public DateTime? Fechamento { get; set; }
         public bool EstaAberta { get; set; }
         public List<Pedido> Pedidos { get; set; }
 
@@ -39,6 +40,8 @@ namespace ControleDeBar.Dominio.ModuloConta
         public void Fechar()
         {
             EstaAberta = false;
+            Fechamento = DateTime.Now;
+
             Mesa.Desocupar();
         }
 
@@ -65,6 +68,8 @@ namespace ControleDeBar.Dominio.ModuloConta
         {
             Conta contaAtualizada = (Conta)registroAtualizado;
 
+            EstaAberta = contaAtualizada.EstaAberta;
+            Fechamento = contaAtualizada.Fechamento;
             Pedidos = contaAtualizada.Pedidos;
         }
 
