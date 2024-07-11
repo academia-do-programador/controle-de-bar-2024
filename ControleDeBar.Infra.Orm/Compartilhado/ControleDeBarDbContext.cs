@@ -12,6 +12,7 @@ namespace ControleDeBar.Infra.Orm.Compartilhado
         public DbSet<Garcom> Garcons { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<Conta> Contas { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -93,6 +94,49 @@ namespace ControleDeBar.Infra.Orm.Compartilhado
                     .HasForeignKey("Produto_Id")
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Conta>(contaBuilder =>
+            {
+                contaBuilder.ToTable("TBConta");
+
+                contaBuilder.Property(c => c.Id)
+                    .IsRequired()
+                    .ValueGeneratedOnAdd();
+
+                contaBuilder.Property(c => c.Titular)
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+
+                contaBuilder.Property(c => c.Abertura)
+                    .IsRequired()
+                    .HasColumnType("datetime2");
+
+                contaBuilder.Property(c => c.Fechamento)
+                    .HasColumnType("datetime2");
+
+                contaBuilder.Property(c => c.EstaAberta)
+                    .IsRequired()
+                    .HasColumnType("bit");
+
+                contaBuilder.HasOne(c => c.Mesa)
+                    .WithMany()
+                    .HasForeignKey("Mesa_Id")
+                    .HasConstraintName("FK_TBConta_TBMesa")
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                contaBuilder.HasOne(c => c.Garcom)
+                  .WithMany()
+                  .HasForeignKey("Garcom_Id")
+                  .HasConstraintName("FK_TBConta_TBGarcom")
+                  .IsRequired()
+                  .OnDelete(DeleteBehavior.Restrict);
+
+                contaBuilder.HasMany(c => c.Pedidos)
+                    .WithOne()
+                    .HasForeignKey("Conta_Id")
+                    .HasConstraintName("FK_TBConta_TBProduto");
             });
 
             base.OnModelCreating(modelBuilder);
