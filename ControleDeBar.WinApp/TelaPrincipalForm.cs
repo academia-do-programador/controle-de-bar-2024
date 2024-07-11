@@ -7,6 +7,7 @@ using ControleDeBar.Infra.Orm.ModuloGarcom;
 using ControleDeBar.Infra.Orm.ModuloMesa;
 using ControleDeBar.Infra.Orm.ModuloProduto;
 using ControleDeBar.WinApp.Compartilhado;
+using ControleDeBar.WinApp.ModuloConta;
 using ControleDeBar.WinApp.ModuloGarcom;
 using ControleDeBar.WinApp.ModuloMesa;
 using ControleDeBar.WinApp.ModuloProduto;
@@ -69,6 +70,12 @@ namespace ControleDeBar.WinApp
 
         private void contasMenuItem_Click(object sender, EventArgs e)
         {
+            controlador = new ControladorConta(
+                repositorioProduto,
+                repositorioMesa,
+                repositorioGarcom,
+                repositorioConta
+            );
 
             ConfigurarTelaPrincipal(controlador);
         }
@@ -124,12 +131,25 @@ namespace ControleDeBar.WinApp
 
             if (controlador is IControladorVisualizavel controladorVisualizavel)
                 btnVisualizar.ToolTipText = controladorVisualizavel.ToolTipVisualizar;
+
+            if (controlador is ControladorConta controladorConta)
+            {
+                btnAdicionar.Text = controladorConta.ToolTipAdicionar;
+                btnEditar.Text = controladorConta.ToolTipEditar;
+                btnExcluir.Text = controladorConta.ToolTipExcluir;
+            }
         }
 
         private void ConfigurarIcones(ControladorBase controladorSelecionado)
         {
             btnEditar.Image = Properties.Resources.btnEditar;
             btnExcluir.Image = Properties.Resources.btnExcluir;
+
+            if (controlador is ControladorConta controladorConta)
+            {
+                btnEditar.Image = controladorConta.IconeAdicionarProduto;
+                btnExcluir.Image = controladorConta.IconeFecharConta;
+            }
         }
 
         private void ConfigurarListagem(ControladorBase controladorSelecionado)
