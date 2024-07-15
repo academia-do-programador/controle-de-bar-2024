@@ -34,7 +34,8 @@ namespace ControleDeBar.Dominio.ModuloConta
             EstaAberta = true;
             Abertura = DateTime.Now;
 
-            Mesa.Ocupar();
+            if (Mesa != null)
+                Mesa.Ocupar();
         }
 
         public void Fechar()
@@ -76,6 +77,9 @@ namespace ControleDeBar.Dominio.ModuloConta
         public override List<string> Validar()
         {
             List<string> erros = new List<string>();
+
+            if (Titular.Length < 3)
+                erros.Add("O campo \"Titular\" necessita de ao menos 3 caracteres");
 
             if (Garcom == null)
                 erros.Add("O campo \"Garçom\" é obrigatorio");
