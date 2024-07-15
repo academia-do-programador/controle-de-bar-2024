@@ -9,11 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Domínio", "2. Domínio"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Infraestrutura", "3. Infraestrutura", "{CC00371E-017D-4EB2-BEB2-70D1359DCAE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeBar.WinApp", "ControleDeBar.WinApp\ControleDeBar.WinApp.csproj", "{35FB35C8-E336-4972-B8BF-8E7F0D600452}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeBar.WinApp", "ControleDeBar.WinApp\ControleDeBar.WinApp.csproj", "{35FB35C8-E336-4972-B8BF-8E7F0D600452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeBar.Dominio", "ControleDeBar.Dominio\ControleDeBar.Dominio.csproj", "{8C1014B9-B6AE-4AB1-B475-62A761D4A46E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeBar.Dominio", "ControleDeBar.Dominio\ControleDeBar.Dominio.csproj", "{8C1014B9-B6AE-4AB1-B475-62A761D4A46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeBar.Infra.Orm", "ControleDeBar.Infra.Orm\ControleDeBar.Infra.Orm.csproj", "{C2983926-E0BA-46E1-A37B-3E7A3C29E6E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeBar.Infra.Orm", "ControleDeBar.Infra.Orm\ControleDeBar.Infra.Orm.csproj", "{C2983926-E0BA-46E1-A37B-3E7A3C29E6E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Testes", "4. Testes", "{008C9DDB-9FDB-4441-B446-0A9676A6559C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1. Unidade", "4.1. Unidade", "{B5B691CF-9FFF-4D08-A5DB-53FDC57EC026}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2. Integração", "4.2. Integração", "{65AFBC28-222F-42CD-8E7A-C9425AECB3EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +47,8 @@ Global
 		{35FB35C8-E336-4972-B8BF-8E7F0D600452} = {E68BDA86-2F52-4BA8-8930-14C47277689B}
 		{8C1014B9-B6AE-4AB1-B475-62A761D4A46E} = {924FC8C9-B255-4C63-856E-EF4AE8038453}
 		{C2983926-E0BA-46E1-A37B-3E7A3C29E6E6} = {CC00371E-017D-4EB2-BEB2-70D1359DCAE6}
+		{B5B691CF-9FFF-4D08-A5DB-53FDC57EC026} = {008C9DDB-9FDB-4441-B446-0A9676A6559C}
+		{65AFBC28-222F-42CD-8E7A-C9425AECB3EA} = {008C9DDB-9FDB-4441-B446-0A9676A6559C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F602749B-4698-472B-B8FD-15503196A21B}
