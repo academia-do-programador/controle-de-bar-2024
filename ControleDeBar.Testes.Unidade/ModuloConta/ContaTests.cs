@@ -5,7 +5,7 @@ using ControleDeBar.Dominio.ModuloProduto;
 
 namespace ControleDeBar.Testes.Unidade
 {
-    [TestClass] // atributos
+    [TestClass]
     [TestCategory("Testes de Unidade de Conta")]
     public class ContaTests
     {

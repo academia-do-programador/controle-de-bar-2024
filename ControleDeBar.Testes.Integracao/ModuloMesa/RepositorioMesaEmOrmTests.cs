@@ -21,7 +21,7 @@ namespace ControleDeBar.Testes.Integracao.ModuloMesa
         }
 
         [TestMethod]
-        public void Deve_Inserir_Mesa()
+        public void Deve_Inserir_Mesa_Corretamente()
         {
             // Arrange
             Mesa novaMesa = new Mesa("01-T");
@@ -36,7 +36,7 @@ namespace ControleDeBar.Testes.Integracao.ModuloMesa
         }
 
         [TestMethod]
-        public void Deve_Editar_Mesa()
+        public void Deve_Editar_Mesa_Corretamente()
         {
             // Arrange 
             Mesa mesaOriginal = new Mesa("01-T");
@@ -55,7 +55,7 @@ namespace ControleDeBar.Testes.Integracao.ModuloMesa
         }
 
         [TestMethod]
-        public void Deve_Excluir_Mesa()
+        public void Deve_Excluir_Mesa_Corretamente()
         {
             // Arrange
             Mesa mesa = new Mesa("01");
