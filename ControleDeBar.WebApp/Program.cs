@@ -25,7 +25,104 @@ namespace ControleDeBar.WebApp
 
             app.MapPost("/mesas/inserir", InserirMesa);
 
+            app.MapGet("/mesas/editar/{id:int}", ExibirFormularioEditarMesa);
+
+            app.MapPost("/mesas/editar/{id:int}", EditarMesa);
+
+            app.MapGet("/mesas/excluir/{id:int}", ExibirFormularioExcluirMesa);
+
+            app.MapPost("/mesas/excluir/{id:int}", ExcluirMesa);
+
             app.Run();
+        }
+
+        private static Task ExcluirMesa(HttpContext context)
+        {
+            ControleDeBarDbContext db = new ControleDeBarDbContext();
+            IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+
+            int id = Convert.ToInt32(context.GetRouteValue("id"));
+
+            Mesa mesa = repositorioMesa.SelecionarPorId(id);
+
+            repositorioMesa.Excluir(mesa);
+
+            context.Response.StatusCode = 200;
+
+            string html = File.ReadAllText("Html/mensagens-mesa.html");
+
+            html = html.Replace("#mensagem#", $"A mesa id \"{mesa.Id}\" foi excluída com sucesso!");
+
+            return context.Response.WriteAsync(html);
+        }
+
+        private static Task ExibirFormularioExcluirMesa(HttpContext context)
+        {
+            ControleDeBarDbContext db = new ControleDeBarDbContext();
+            IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+
+            int id = Convert.ToInt32(context.GetRouteValue("id"));
+
+            Mesa mesa = repositorioMesa.SelecionarPorId(id);
+
+            string html = File.ReadAllText("Html/excluir-mesa-form.html");
+
+            html = html.Replace("#numeromesa#", mesa.Numero);
+
+            html = html.Replace("#id#", mesa.Id.ToString());
+
+            context.Response.ContentType = "text/html";
+
+            return context.Response.WriteAsync(html);
+        }
+
+        private static Task ExibirFormularioEditarMesa(HttpContext context)
+        {
+            ControleDeBarDbContext db = new ControleDeBarDbContext();
+            IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+
+            int id = Convert.ToInt32(context.GetRouteValue("id"));
+
+            Mesa mesa = repositorioMesa.SelecionarPorId(id);
+
+            string html = File.ReadAllText("Html/editar-mesa-form.html");
+
+            html = html.Replace("#id#", mesa.Id.ToString());
+
+            html = html.Replace("#numero#", mesa.Numero.ToString());
+
+            if (mesa.Ocupada)
+                html = html.Replace("<input name=\"ocupada\" type=\"checkbox\" />", "<input name=\"ocupada\" type=\"checkbox\" checked/>");
+
+            context.Response.ContentType = "text/html";
+
+            return context.Response.WriteAsync(html);
+        }
+
+        private static Task EditarMesa(HttpContext context)
+        {
+            ControleDeBarDbContext db = new ControleDeBarDbContext();
+            IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+
+            int id = Convert.ToInt32(context.GetRouteValue("id"));
+
+            Mesa mesaOriginal = repositorioMesa.SelecionarPorId(id);
+
+            Mesa mesaAtualizada = new Mesa()
+            {
+                Numero = Convert.ToString(context.Request.Form["numero"]),
+                Ocupada = context.Request.Form["ocupada"] == "on"
+            };
+
+            repositorioMesa.Editar(mesaOriginal, mesaAtualizada);
+
+            context.Response.StatusCode = 200;
+
+            string html = File.ReadAllText("Html/mensagens-mesa.html");
+
+            html = html.Replace("#mensagem#", $"A mesa id \"{mesaOriginal.Id}\" foi atualizada!");
+
+            return context.Response.WriteAsync(html);
         }
 
         private static Task ExibirPaginaDetalhesMesa(HttpContext context)
@@ -94,15 +191,22 @@ namespace ControleDeBar.WebApp
             ControleDeBarDbContext db = new ControleDeBarDbContext();
             IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
 
-            IEnumerable<string> mesasStrings = repositorioMesa
-                .SelecionarTodos()
-                .Select(mesa => "-> " + mesa.ToString());
+            List<Mesa> mesas = repositorioMesa.SelecionarTodos();
 
-            string resposta = string.Join('\n', mesasStrings);
+            string conteudoArquivo = File.ReadAllText("Html/listar-mesas.html");
 
-            context.Response.ContentType = "text/plain; charset=utf-8";
+            foreach (Mesa m in mesas)
+            {
+                string itemLista = $"<li>{m.ToString()}</li> #mesa#";
 
-            return context.Response.WriteAsync(resposta);
+                conteudoArquivo =
+                    conteudoArquivo
+                        .Replace("#mesa#", itemLista);
+            }
+
+            conteudoArquivo = conteudoArquivo.Replace("#mesa#", "");
+
+            return context.Response.WriteAsync(conteudoArquivo);
         }
 
         private static Task OlaMundo(HttpContext context)

@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Html\editar-mesa-form.html" />
     <None Remove="Html\inserir-mesa-form.html" />
     <None Remove="Html\mensagens-mesa.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Html\editar-mesa-form.html" />
     <Content Include="Html\inserir-mesa-form.html" />
     <Content Include="Html\mensagens-mesa.html" />
   </ItemGroup>
