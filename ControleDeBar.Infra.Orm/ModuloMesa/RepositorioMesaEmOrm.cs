@@ -50,7 +50,7 @@ namespace ControleDeBar.Infra.Orm.ModuloMesa
         {
             return dbContext.Mesas
                 .Include(m => m.Contas)
-                .FirstOrDefault()!;
+                .FirstOrDefault(m => m.Id == id)!;
         }
 
         public List<Mesa> SelecionarTodos()
