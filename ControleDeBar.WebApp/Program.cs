@@ -22,7 +22,7 @@ namespace ControleDeBar.WebApp
             // parâmetro de rota
             app.MapGet("/mesas/inserir/{numeroMesa}", InserirMesa);
 
-            app.MapGet("/mesas/detalhes/{id}", ExibirPaginaDetalhesMesa);
+            app.MapGet("/mesas/detalhes/{id:int}", ExibirPaginaDetalhesMesa);
 
             app.Run();
         }
@@ -68,6 +68,7 @@ namespace ControleDeBar.WebApp
 
             repositorioMesa.Inserir(novaMesa);
 
+            context.Response.StatusCode = 201;
             context.Response.ContentType = "text/plain; charset=utf-8";
 
             return context
