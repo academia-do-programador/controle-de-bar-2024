@@ -19,10 +19,11 @@ namespace ControleDeBar.WebApp
 
             app.MapGet("/mesas/listar", ListarMesas);
 
-            // parâmetro de rota
-            app.MapGet("/mesas/inserir/{numeroMesa}", InserirMesa);
-
             app.MapGet("/mesas/detalhes/{id:int}", ExibirPaginaDetalhesMesa);
+
+            app.MapGet("/mesas/inserir", ExibirFormularioInserirMesa);
+
+            app.MapPost("/mesas/inserir", InserirMesa);
 
             app.Run();
         }
@@ -57,23 +58,35 @@ namespace ControleDeBar.WebApp
             return context.Response.WriteAsync(detalhes.ToString());
         }
 
+        private static Task ExibirFormularioInserirMesa(HttpContext context)
+        {
+            // HTML
+            string form = File.ReadAllText("Html/inserir-mesa-form.html");
+
+            context.Response.ContentType = "text/html";
+
+            return context.Response.WriteAsync(form);
+        }
+
         private static Task InserirMesa(HttpContext context)
         {
             ControleDeBarDbContext db = new ControleDeBarDbContext();
             IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
 
-            string numero = context.GetRouteValue("numeroMesa")!.ToString()!;
+            string numero = context.Request.Form["numero"].ToString();
 
             Mesa novaMesa = new Mesa(numero);
 
             repositorioMesa.Inserir(novaMesa);
 
             context.Response.StatusCode = 201;
-            context.Response.ContentType = "text/plain; charset=utf-8";
+            context.Response.ContentType = "text/html";
 
-            return context
-                .Response
-                .WriteAsync($"A mesa id \"{novaMesa.Id}\" foi adicionada com sucesso!");
+            string html = File.ReadAllText("Html/mensagens-mesa.html");
+
+            html = html.Replace("#mensagem#", $"A mesa \"{novaMesa.Id}\" foi cadastrada com sucesso!");
+
+            return context.Response.WriteAsync(html);
         }
 
         private static Task ListarMesas(HttpContext context)
