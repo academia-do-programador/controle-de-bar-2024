@@ -125,7 +125,7 @@ namespace ControleDeBar.Infra.Orm.Compartilhado
                     .HasColumnType("bit");
 
                 contaBuilder.HasOne(c => c.Mesa)
-                    .WithMany()
+                    .WithMany(m => m.Contas)
                     .HasForeignKey("Mesa_Id")
                     .HasConstraintName("FK_TBConta_TBMesa")
                     .IsRequired()

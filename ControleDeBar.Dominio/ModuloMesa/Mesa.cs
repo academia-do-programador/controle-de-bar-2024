@@ -1,4 +1,5 @@
 ﻿using ControleDeBar.Dominio.Compartilhado;
+using ControleDeBar.Dominio.ModuloConta;
 
 namespace ControleDeBar.Dominio.ModuloMesa
 {
@@ -6,8 +7,12 @@ namespace ControleDeBar.Dominio.ModuloMesa
     {
         public string Numero { get; set; }
         public bool Ocupada { get; set; }
+        public List<Conta> Contas { get; set; }
 
-        public Mesa() { }
+        public Mesa()
+        {
+            Contas = new List<Conta>();
+        }
 
         public Mesa(string numeroMesa) : this()
         {
