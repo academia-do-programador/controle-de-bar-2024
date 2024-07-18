@@ -7,12 +7,12 @@
 <body>
     <h1>Edição de Mesa</h1>
 
-    <form action="/mesa/editar/#id#" method="post">
+    <form action="/mesa/editar/@ViewBag.Mesa.Id" method="post">
 
         <label>Número da Mesa: </label> <br />
-        <input name="numero" value="#numero#" />
+        <input name="numero" value="@ViewBag.Mesa.Numero" />
 
-        <input name="ocupada" type="checkbox" />
+        <input name="ocupada" type="checkbox" @(ViewBag.Mesa.Ocupada ? "checked='checked'" : "") />
 
         <button>Gravar</button>
 

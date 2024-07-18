@@ -7,9 +7,9 @@
 <body>
     <h1>Exclusão de Mesa</h1>
 
-    <p>Tem certeza que deseja excluir a mesa #numeromesa#?</p>
+    <p>Tem certeza que deseja excluir a mesa @ViewBag.Mesa.Numero ?</p>
 
-    <form action="/mesa/excluir/#id#" method="post">
+    <form action="/mesa/excluir/@ViewBag.Mesa.Id" method="post">
 
         <button>Excluir</button>
 
