@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Html\listar-mesas.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Html\editar-mesa-form.html" />
     <None Remove="Html\inserir-mesa-form.html" />
     <None Remove="Html\mensagens-mesa.html" />

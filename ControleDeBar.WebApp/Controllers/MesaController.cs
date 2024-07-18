@@ -10,27 +10,16 @@ namespace ControleDeBar.WebApp.Controllers;
 public class MesaController : Controller
 {
     [HttpGet, ActionName("listar")]
-    public Task ListarMesas()
+    public ViewResult ListarMesas()
     {
         ControleDeBarDbContext db = new ControleDeBarDbContext();
         IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
 
         List<Mesa> mesas = repositorioMesa.SelecionarTodos();
 
-        string conteudoArquivo = System.IO.File.ReadAllText("Html/listar-mesas.html");
+        ViewBag.Mesas = mesas;
 
-        StringBuilder sb = new StringBuilder(conteudoArquivo);
-
-        foreach (Mesa m in mesas)
-        {
-            string itemLista = $"<li>{m.ToString()} - <a href='/mesa/editar/{m.Id}'>[Editar]</a> <a href='/mesa/excluir/{m.Id}'>[Excluir]</a> </li> #mesa#";
-
-            sb.Replace("#mesa#", itemLista);
-        }
-
-        sb.Replace("#mesa#", "");
-
-        return HttpContext.Response.WriteAsync(sb.ToString());
+        return View("listar-mesas");
     }
 
     [HttpGet, ActionName("inserir")]
