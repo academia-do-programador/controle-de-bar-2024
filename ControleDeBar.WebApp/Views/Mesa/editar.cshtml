@@ -1,23 +1,27 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var mesa = ViewBag.Mesa;
+}
+
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <title>Edição de Mesa</title>
-</head>
-<body>
-    <h1>Edição de Mesa</h1>
+    <head>
+        <meta charset="utf-8" />
+        <title>Edição de Mesa</title>
+    </head>
+    <body>
+        <h1>Edição de Mesa</h1>
 
-    <form action="/mesa/editar/@ViewBag.Mesa.Id" method="post">
+        <form action="/mesa/editar/@mesa.Id" method="post">
 
-        <label>Número da Mesa: </label> <br />
-        <input name="numero" value="@ViewBag.Mesa.Numero" />
+            <label>Número da Mesa: </label> <br />
+            <input name="numero" value="@mesa.Numero" />
 
-        <input name="ocupada" type="checkbox" @(ViewBag.Mesa.Ocupada ? "checked='checked'" : "") />
+            <input name="ocupada" type="checkbox" @(mesa.Ocupada ? "checked" : "") />
 
-        <button>Gravar</button>
+            <button>Gravar</button>
 
-    </form>
+        </form>
 
-    <a href="/mesa/listar">Listar Mesas</a>
-</body>
+        <a href="/mesa/listar">Listar Mesas</a>
+    </body>
 </html>

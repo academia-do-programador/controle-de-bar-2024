@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var mesa = ViewBag.Mesa;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,9 +11,9 @@
 <body>
     <h1>Exclusão de Mesa</h1>
 
-    <p>Tem certeza que deseja excluir a mesa @ViewBag.Mesa.Numero ?</p>
+    <p>Tem certeza que deseja excluir a mesa @mesa.Numero?</p>
 
-    <form action="/mesa/excluir/@ViewBag.Mesa.Id" method="post">
+    <form action="/mesa/excluir/@mesa.Id" method="post">
 
         <button>Excluir</button>
 

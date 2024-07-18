@@ -82,7 +82,7 @@ public class MesaController : Controller
     }
 
     [HttpPost, ActionName("excluir")]
-    public ViewResult ExcluirMesa(int id)
+    public ViewResult ExcluirConfirmado(int id)
     {
         ControleDeBarDbContext db = new ControleDeBarDbContext();
         IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
