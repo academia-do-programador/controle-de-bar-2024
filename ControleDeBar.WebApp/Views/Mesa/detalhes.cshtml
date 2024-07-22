@@ -7,26 +7,45 @@
 <head>
     <meta charset="utf-8" />
     <title>Detalhes da Mesa - Controle de Bar</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <h1>Detalhes da Mesa</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 d-grid gap-2 d-md-block">
+            <h1>Detalhes da Mesa</h1>
+            
+            <div class="d-grid">
+                <label class="fs-5"><strong>Mesa:</strong> @mesa.Numero</label>
 
-    <p>Id: @mesa.Id</p>
-    <p>Número: @mesa.Numero</p>
-    <p>Status: @(mesa.Ocupada ? "Ocupada" : "Livre")</p>
+                <label><strong>Id:</strong> [@mesa.Id]</label>
+                <label><strong>Status:</strong> @(mesa.Ocupada ? "Ocupada" : "Livre")</label>
+            </div>
 
-    @if (mesa.Contas.Count > 0)
-    {
-        <p>Contas relacionadas à mesa:</p>
-
-        <ul>
-            @foreach(var conta in @mesa.Contas)
+            @if (mesa.Contas.Count > 0)
             {
-                <li>@conta.ToString()</li>
-            }
-        </ul>
-    }
+                <div class="mt-3">
+                    <h5>Contas relacionadas à mesa:</h5>
 
-    <a href="/mesa/inserir">Inserir Nova Mesa</a>
+                    <ul>
+                        @foreach (var conta in mesa.Contas)
+                        {
+                            <li>@conta.ToString()</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <a href="/mesa/listar" class="btn btn-secondary px-5 mt-4">
+                <i class="bi bi-arrow-return-left me-1"></i>
+                Voltar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
