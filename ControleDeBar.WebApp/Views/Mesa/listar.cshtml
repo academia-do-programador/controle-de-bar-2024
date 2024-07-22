@@ -3,26 +3,59 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Listagem de Mesas - Controle de Bar</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <h1>Listagem de Mesas</h1>
 
-    <ul>
+<div class="container">
+    
+    @* Cabeçalho *@
+    <div class="mt-3">
+        <a class="btn btn-primary px-4" href="/mesa/inserir">
+            <i class="bi bi-plus-circle"></i>
+            Inserir Nova Mesa
+        </a>
+    </div>
+
+    @* Lista *@
+    
+    <div class="row gap-3 mt-3 p-2">
         @foreach (var mesa in mesas)
         {
-            <li>
-                @mesa -
-                <a href="/mesa/detalhes/@mesa.Id">[Detalhes]</a>
-                <a href="/mesa/editar/@mesa.Id">[Editar]</a>
-                <a href="/mesa/excluir/@mesa.Id">[Excluir]</a>
-            </li>
+            <div class="card col-md-5 col-lg-4 col-xl-3">
+                <div class="card-body">
+                    <div class="row row-cols-2">
+                        <label class="card-title fs-5 fw-semibold">Mesa: @mesa.Numero</label>
+                    
+                        <div class="text-end">
+                            <a class="btn btn-secondary btn-sm" href="/mesa/detalhes/@mesa.Id">
+                                <i class="bi bi-search"></i>
+                            </a>
+                        
+                            <a class="btn btn-primary btn-sm" href="/mesa/editar/@mesa.Id">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        
+                            <a class="btn btn-danger btn-sm" href="/mesa/excluir/@mesa.Id">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <p class="card-subtitle fs-6"><strong>Id:</strong> [@mesa.Id]</p>
+                    <p class="card-subtitle fs-6"><strong>Status:</strong> @(mesa.Ocupada ? "Ocupada" : "Livre")</p>
+                </div>
+            </div>
         }
-    </ul>
+    </div>
+</div>
 
-    <a href="/mesa/inserir">Inserir Nova Mesa</a>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
