@@ -35,6 +35,7 @@ public class MesaController : Controller
         HttpContext.Response.StatusCode = 201;
 
         ViewBag.Mensagem = $"O registro com o ID {novaMesa.Id} foi cadastrado com sucesso!";
+        ViewBag.Link = "/mesa/listar";
 
         return View("mensagens");
     }
@@ -65,6 +66,7 @@ public class MesaController : Controller
         repositorioMesa.Editar(mesaOriginal, mesaAtualizada);
 
         ViewBag.Mensagem = $"O registro com o ID {mesaOriginal.Id} foi editado com sucesso!";
+        ViewBag.Link = "/mesa/listar";
 
         return View("mensagens");
     }
@@ -92,6 +94,7 @@ public class MesaController : Controller
         repositorioMesa.Excluir(mesa);
 
         ViewBag.Mensagem = $"O registro com o ID {mesa.Id} foi excluído com sucesso!";
+        ViewBag.Link = "/mesa/listar";
 
         return View("mensagens");
     }

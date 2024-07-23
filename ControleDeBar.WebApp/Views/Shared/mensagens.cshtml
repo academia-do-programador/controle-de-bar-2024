@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Notificação";
+
+    string mensagem = ViewBag.Mensagem;
+    string link = ViewBag.Link != null ? $"href={ViewBag.Link}" : "";
+}
+
+<div>
+    <h3>@mensagem</h3>
+    
+    <a @link class="btn btn-secondary px-5 mt-5">
+        <i class="bi bi-arrow-return-left me-1"></i>
+        Voltar
+    </a>
+</div>
