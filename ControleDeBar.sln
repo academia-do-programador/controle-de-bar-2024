@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.2. Desktop", "1.2. Deskto
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.3. Web", "1.3. Web", "{40E6510C-3B7A-4846-B391-790D7937B001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeBar.WebApp", "ControleDeBar.WebApp\ControleDeBar.WebApp.csproj", "{32FF1477-5761-47CB-B4BB-0C97F5E173AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeBar.WebApp", "ControleDeBar.WebApp\ControleDeBar.WebApp.csproj", "{32FF1477-5761-47CB-B4BB-0C97F5E173AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
