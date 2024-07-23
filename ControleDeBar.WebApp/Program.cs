@@ -12,6 +12,8 @@ public class Program
 
         WebApplication app = builder.Build();
 
+        app.UseStaticFiles();
+
         app.MapControllerRoute("rotas-padrao", "{controller}/{action}/{id:int?}");
 
         app.Run();
