@@ -1,0 +1,56 @@
+﻿@using ControleDeBar.Dominio.ModuloGarcom
+@using ControleDeBar.Dominio.ModuloMesa
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Abrir Conta";
+    List<Mesa> mesas = ViewBag.Mesas;
+    List<Garcom> garcons = ViewBag.Garcons;
+}
+
+<div class="row mt-3">
+    <div class="col-lg-6">
+
+        <form action="/conta/abrir" method="post">
+
+            <div class="mt-2">
+                <label class="control-label">Titular:</label>
+                <input name="titular" class="form-control" />
+            </div>
+
+            <div class="mt-2">
+                <label class="control-label">Mesa:</label>
+
+                <select class="form-select" name="idMesa"> @* ComboBox *@
+
+                    <option value="">Selecione uma mesa</option>
+
+                    @foreach (var mesa in mesas)
+                    {
+                        <option value="@mesa.Id">Mesa @mesa.Numero</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mt-2">
+                <label class="control-label">Garçom:</label>
+                <select class="form-select" name="idGarcom">
+                    <option value="">Selecione um garçom</option>
+
+                    @foreach (var garcom in garcons)
+                    {
+                        <option value="@garcom.Id">@garcom.Nome</option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="mt-2">
+                <button class="btn btn-primary">Gravar</button>
+                <a href="/conta/listar" class="btn btn-info">Voltar</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
