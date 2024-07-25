@@ -67,4 +67,44 @@ public class GarcomController : Controller
 
         return View("mensagens");
     }
+
+    public ViewResult Excluir(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioGarcom = new RepositorioGarcomEmOrm(db);
+
+        var garcomParaExcluir = repositorioGarcom.SelecionarPorId(id);
+
+        ViewBag.Garcom = garcomParaExcluir;
+
+        return View();
+    }
+
+    [HttpPost, ActionName("excluir")]
+    public ViewResult ExcluirConfirmado(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioGarcom = new RepositorioGarcomEmOrm(db);
+
+        var garcomParaExcluir = repositorioGarcom.SelecionarPorId(id);
+
+        repositorioGarcom.Excluir(garcomParaExcluir);
+
+        ViewBag.Mensagem = $"O registro com o ID [{garcomParaExcluir.Id}] foi excluído com sucesso!";
+        ViewBag.Link = "/garcom/listar";
+
+        return View("mensagens");
+    }
+
+    public ViewResult Detalhes(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioGarcom = new RepositorioGarcomEmOrm(db);
+
+        var garcomOriginal = repositorioGarcom.SelecionarPorId(id);
+
+        ViewBag.Garcom = garcomOriginal;
+
+        return View();
+    }
 }

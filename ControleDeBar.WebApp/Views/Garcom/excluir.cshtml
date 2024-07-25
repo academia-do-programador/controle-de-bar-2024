@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Excluir Garçom";
+
+    var garcom = ViewBag.Garcom;
+}
+
+<div class="row mt-3">
+    <div class="col-lg-6 d-grid gap-4">
+
+        <div class="d-grid">
+            <label class="fs-5"><strong>Garçom:</strong> @garcom.Nome</label>
+
+            <label><strong>Id:</strong> [@garcom.Id]</label>
+            <label><strong>CPF:</strong> @garcom.CPF</label>
+        </div>
+        
+        <p class="text-bg-danger p-3 rounded">Deseja realmente confirmar a exclusão? Não será possível recuperar os dados excluídos posteriormente.</p>
+        
+         <form class="mt-2 d-grid gap-2 d-md-block" action="/garcom/excluir/@garcom.Id" method="post">
+
+            <button class="btn btn-danger px-5">
+                <i class="bi bi-trash-fill me-1"></i>
+                Excluir
+            </button>
+            <a href="/garcom/listar" class="btn btn-secondary px-5">
+                <i class="bi bi-arrow-return-left me-1"></i>
+                Voltar
+            </a>
+        </form>
+
+    </div>
+
+</div>
