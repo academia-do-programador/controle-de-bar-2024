@@ -11,4 +11,12 @@
     <ProjectReference Include="..\ControleDeBar.Infra.Orm\ControleDeBar.Infra.Orm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Garcom\editar.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Garcom\editar.cshtml" />
+  </ItemGroup>
+
 </Project>

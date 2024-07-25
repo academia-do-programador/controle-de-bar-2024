@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Editar Garçom";
+    var garcom = ViewBag.Garcom;
+}
+
+<div class="row mt-3">
+    <div class="col-lg-6">
+        <form class="d-grid gap-4" action="/garcom/editar/@garcom.Id" method="post">
+
+            <div class="mt-2">
+                <label class="control-label fw-semibold">Nome do Garçom:</label>
+                <input class="form-control" type="text" name="nome" value="@garcom.Nome" />
+            </div>
+
+            <div class="mt-2">
+                <label class="control-label fw-semibold">CPF do Garçom:</label>
+                <input class="form-control" type="text" name="cpf" id="cpf" value="@garcom.CPF" />
+            </div>
+
+            <div class="mt-2 d-grid gap-2 d-md-block">
+                <button class="btn btn-primary px-5">
+                    <i class="bi bi-floppy-fill me-1"></i>
+                    Gravar
+                </button>
+
+                <a class="btn btn-secondary px-5" href="/garcom/listar">
+                    <i class="bi bi-arrow-return-left me-1"></i>
+                    Voltar
+                </a>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#cpf").mask("000.000.000-00", { reverse: true })
+        });
+    </script>
+}

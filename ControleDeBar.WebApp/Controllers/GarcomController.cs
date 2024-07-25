@@ -35,6 +35,36 @@ public class GarcomController : Controller
         ViewBag.Mensagem = $"O registro com o ID [{garcom.Id}] foi cadastrado com sucesso!";
         ViewBag.Link = "/garcom/listar";
 
+        HttpContext.Response.StatusCode = 201;
+
+        return View("mensagens");
+    }
+
+    public ViewResult Editar(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioGarcom = new RepositorioGarcomEmOrm(db);
+
+        var garcomOriginal = repositorioGarcom.SelecionarPorId(id);
+
+        ViewBag.Garcom = garcomOriginal;
+
+        return View();
+    }
+
+    [HttpPost]
+    public ViewResult Editar(int id, Garcom garcomAtualizado)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioGarcom = new RepositorioGarcomEmOrm(db);
+
+        var garcomOriginal = repositorioGarcom.SelecionarPorId(id);
+
+        repositorioGarcom.Editar(garcomOriginal, garcomAtualizado);
+
+        ViewBag.Mensagem = $"O registro com o ID [{garcomOriginal.Id}] foi editado com sucesso!";
+        ViewBag.Link = "/garcom/listar";
+
         return View("mensagens");
     }
 }
