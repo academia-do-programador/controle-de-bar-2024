@@ -1,0 +1,66 @@
+﻿@using ControleDeBar.Dominio.ModuloConta
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Listagem de Contas";
+    List<Conta> contas = ViewBag.Contas;
+}
+
+<div class="d-flex gap-2 mt-3">
+    <a class="btn btn-primary px-3" href="/conta/abrir">Abrir Conta</a>
+
+    <a class="btn btn-primary px-3" href="/conta/listar?status=abertas">Contas Abertas</a>
+
+    <a class="btn btn-primary px-3" href="/conta/listar?status=fechadas">Contas Fechadas</a>
+
+    <a class="btn btn-primary px-3" href="/conta/visualizar-faturamento">Visualizar Faturamento</a>
+</div>
+
+
+<div class="row mt-3">
+    @if (contas.Count == 0)
+    {
+        <h3 class="fs-2">Nenhuma conta foi encontrada!</h3>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Abertura</th>
+                <th>Titular</th>
+                <th>Mesa</th>
+                <th>Garçom</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            
+            <tbody>
+                @foreach (var conta in contas)
+                {
+                    <tr>
+                        <td>@conta.Id</td>
+                        <td>@conta.Abertura</td>
+                        <td>@conta.Titular</td>
+                        <td>@conta.Mesa.Numero</td>
+                        <td>@conta.Garcom.Nome</td>
+                        <td>@(conta.EstaAberta ? "Aberta" : "Fechada")</td>
+                        <td>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <a class="btn btn-primary btn-sm" href="/conta/@conta.Id/gerenciar-pedidos">
+                                    <i class="bi bi-bag-plus-fill"></i>
+                                </a>
+
+                                <a class="btn btn-success btn-sm" href="/conta/@conta.Id/fechar">
+                                    <i class="bi bi-cash-coin"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
