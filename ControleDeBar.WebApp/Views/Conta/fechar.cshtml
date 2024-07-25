@@ -1,0 +1,61 @@
+﻿@using ControleDeBar.Dominio.ModuloConta
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Fechar Conta";
+    Conta conta = ViewBag.Conta;
+}
+
+<div class="row">
+
+    <div class="mt-2">
+        <label class="control-label">Titular: @conta.Titular</label>
+    </div>
+
+    <div class="mt-2">
+        <label class="control-label">Mesa: @conta.Mesa.Numero</label>
+    </div>
+
+    <div class="mt-2">
+        <label class="control-label">Garçom: @conta.Garcom.Nome</label>
+    </div>
+
+    <div class="mt-2">
+        <label class="control-label">Valor Total: @conta.CalcularValorTotal()</label>
+    </div>
+
+</div>
+
+<div class="row mt-2">
+
+    <div class="col-6 ">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Total parcial</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var pedido in conta.Pedidos)
+            {
+                <tr>
+                    <td>@pedido.Id</td>
+                    <td>@pedido.Produto.Nome</td>
+                    <td>@pedido.QuantidadeSolicitada</td>
+                    <td>@pedido.CalcularTotalParcial()</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-2">
+        <form action="/conta/@conta.Id/fechar" method="post">
+            <button class="btn btn-success">Fechar</button>
+            <a href="/conta/listar" class="btn btn-info">Voltar</a>
+        </form>
+    </div>
+
+</div>

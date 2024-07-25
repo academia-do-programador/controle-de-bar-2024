@@ -55,9 +55,22 @@ namespace ControleDeBar.Dominio.ModuloConta
             return novoPedido;
         }
 
-        public void RemoverPedido(Pedido pedido)
+        public Pedido RemoverPedido(Pedido pedido)
         {
             Pedidos.Remove(pedido);
+
+            return pedido;
+        }
+
+        public Pedido RemoverPedido(int idPedido)
+        {
+            var pedido = Pedidos.Find(p => idPedido == p.Id);
+
+            if (pedido == null) return null;
+
+            Pedidos.Remove(pedido);
+
+            return pedido;
         }
 
         public decimal CalcularValorTotal()
