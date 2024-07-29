@@ -1,20 +1,22 @@
-﻿@{
+﻿@model ControleDeBar.WebApp.Models.InserirGarcomViewModel
+
+@{
     Layout = "_Layout";
     ViewBag.Title = "Cadastrar Garçom";
 }
 
 <div class="row mt-3">
     <div class="col-lg-6">
-        <form class="d-grid gap-4" action="/garcom/inserir" method="post">
+        <form class="d-grid gap-4" asp-action="Inserir">
 
             <div class="mt-2">
                 <label class="control-label fw-semibold">Nome do Garçom:</label>
-                <input class="form-control" type="text" name="nome" />
+                <input class="form-control" asp-for="Nome"/>
             </div>
             
             <div class="mt-2">
                 <label class="control-label fw-semibold">CPF do Garçom:</label>
-                <input class="form-control" type="text" name="cpf" id="cpf"/>
+                <input class="form-control" asp-for="CPF" id="cpf"/>
             </div>
 
             <div class="mt-2 d-grid gap-2 d-md-block">
