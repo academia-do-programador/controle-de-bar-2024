@@ -1,26 +1,26 @@
-﻿@using ControleDeBar.Dominio.ModuloConta
+﻿@model ControleDeBar.WebApp.Models.FecharContaViewModel
+
 @{
     Layout = "_Layout";
     ViewBag.Title = "Fechar Conta";
-    Conta conta = ViewBag.Conta;
 }
 
 <div class="row">
 
     <div class="mt-2">
-        <label class="control-label">Titular: @conta.Titular</label>
+        <label class="control-label">Titular: @Model.Titular</label>
     </div>
 
     <div class="mt-2">
-        <label class="control-label">Mesa: @conta.Mesa.Numero</label>
+        <label class="control-label">Mesa: @Model.Mesa</label>
     </div>
 
     <div class="mt-2">
-        <label class="control-label">Garçom: @conta.Garcom.Nome</label>
+        <label class="control-label">Garçom: @Model.Garcom</label>
     </div>
 
     <div class="mt-2">
-        <label class="control-label">Valor Total: @conta.CalcularValorTotal()</label>
+        <label class="control-label">Valor Total: @Model.ValorTotal</label>
     </div>
 
 </div>
@@ -38,13 +38,13 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var pedido in conta.Pedidos)
+            @foreach (var pedido in Model.Pedidos)
             {
                 <tr>
                     <td>@pedido.Id</td>
-                    <td>@pedido.Produto.Nome</td>
+                    <td>@pedido.Produto</td>
                     <td>@pedido.QuantidadeSolicitada</td>
-                    <td>@pedido.CalcularTotalParcial()</td>
+                    <td>@pedido.TotalParcial.ToString("C2")</td>
                 </tr>
             }
             </tbody>
@@ -52,7 +52,7 @@
     </div>
 
     <div class="mt-2">
-        <form action="/conta/@conta.Id/fechar" method="post">
+        <form asp-action="FecharConfirmado">
             <button class="btn btn-success">Fechar</button>
             <a href="/conta/listar" class="btn btn-info">Voltar</a>
         </form>

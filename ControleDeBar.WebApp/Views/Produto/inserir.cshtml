@@ -1,20 +1,24 @@
-﻿@{
+﻿@model ControleDeBar.WebApp.Models.InserirProdutoViewModel
+
+@{
     Layout = "_Layout";
     ViewBag.Title = "Inserir Novo Produto";
 }
 
 <div class="row mt-3">
     <div class="col-lg-6">
-        <form class="d-grid gap-4" action="/produto/inserir" method="post">
+        <form class="d-grid gap-4" asp-action="Inserir">
 
             <div class="mt-2">
                 <label class="control-label fw-semibold">Nome do Produto: </label>
                 <input class="form-control" name="nome" />
+                <span class="text-danger my-1" asp-validation-for="Nome"></span>
             </div>
 
             <div class="mt-2">
                 <label class="control-label fw-semibold">Valor do Produto (R$): </label>
                 <input class="form-control" name="valor" id="valor" value="0.00" />
+                <span class="text-danger my-1" asp-validation-for="Valor"></span>
             </div>
 
             <div class="mt-2 d-grid gap-2 d-md-block">

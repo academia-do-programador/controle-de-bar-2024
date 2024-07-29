@@ -8,166 +8,208 @@ using ControleDeBar.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ControleDeBar.WebApp.Controllers
+namespace ControleDeBar.WebApp.Controllers;
+
+public class ContaController : Controller
 {
-    public class ContaController : Controller
+    public ViewResult Listar(TipoFiltroContaEnum status)
     {
-        public ViewResult Listar(TipoFiltroContaEnum status)
-        {
-            var db = new ControleDeBarDbContext();
-            var repositorioConta = new RepositorioContaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioConta = new RepositorioContaEmOrm(db);
 
-            var contas = status switch
+        var contas = status switch
+        {
+            TipoFiltroContaEnum.Abertas => repositorioConta.SelecionarContasEmAberto(),
+            TipoFiltroContaEnum.Fechadas => repositorioConta.SelecionarContasFechadas(),
+            _ => repositorioConta.SelecionarContas()
+        };
+
+        var listarContasVm = contas
+            .Select(c =>
             {
-                TipoFiltroContaEnum.Abertas => repositorioConta.SelecionarContasEmAberto(),
-                TipoFiltroContaEnum.Fechadas => repositorioConta.SelecionarContasFechadas(),
-                _ => repositorioConta.SelecionarContas()
-            };
+                return new ListarContaViewModel
+                {
+                    Id = c.Id,
+                    Titular = c.Titular,
+                    Mesa = c.Mesa.Numero,
+                    Garcom = c.Garcom.Nome,
+                    EstaAberta = c.EstaAberta ? "Aberta" : "Fechada",
+                    Abertura = c.Abertura,
+                    Fechamento = c.Fechamento,
+                    Pedidos = c.Pedidos.Select(p =>
+                    {
+                        return new PedidoContaViewModel
+                        {
+                            Id = p.Id,
+                            Produto = p.Produto.Nome,
+                            QuantidadeSolicitada = p.QuantidadeSolicitada,
+                            TotalParcial = p.CalcularTotalParcial()
+                        };
+                    })
+                };
+            });
 
-            ViewBag.Contas = contas;
+        return View(listarContasVm);
+    }
 
-            return View();
-        }
+    public ViewResult Abrir()
+    {
+        var db = new ControleDeBarDbContext();
 
-        public ViewResult Abrir()
-        {
-            var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
+        var repositorioGarcom = new RepositorioGarcomEmOrm(db);
 
-            var repositorioMesa = new RepositorioMesaEmOrm(db);
-            var repositorioGarcom = new RepositorioGarcomEmOrm(db);
-
-            var mesas = repositorioMesa
-                .SelecionarTodos()
-                .Select(x => new SelectListItem(x.Numero, x.Id.ToString()));
+        var mesas = repositorioMesa
+            .SelecionarTodos()
+            .Select(x => new SelectListItem(x.Numero, x.Id.ToString()));
             
-            var garcons = repositorioGarcom
-                .SelecionarTodos()
-                .Select(x => new SelectListItem(x.Nome, x.Id.ToString()));
+        var garcons = repositorioGarcom
+            .SelecionarTodos()
+            .Select(x => new SelectListItem(x.Nome, x.Id.ToString()));
 
-            var abrirContaVm = new AbrirContaViewModel
+        var abrirContaVm = new AbrirContaViewModel
+        {
+            Mesas = mesas.ToList(),
+            Garcons = garcons.ToList()
+        };
+
+        return View(abrirContaVm);
+    }
+
+    [HttpPost]
+    public ViewResult Abrir(AbrirContaViewModel abrirContaVm)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioConta = new RepositorioContaEmOrm(db);
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
+        var repositoriogarcom = new RepositorioGarcomEmOrm(db);
+
+        var mesa = repositorioMesa.SelecionarPorId(abrirContaVm.IdMesa);
+        var garcom = repositoriogarcom.SelecionarPorId(abrirContaVm.IdGarcom);
+
+        var conta = new Conta(abrirContaVm.Titular, mesa, garcom);
+
+        repositorioConta.Inserir(conta);
+
+        var notificacaoVm = new NotificacaoViewModel
+        {
+            Mensagem = $"O registro com o ID [{conta.Id}] foi cadastrado com sucesso!",
+            LinkRedirecionamento =  "/conta/listar"
+        };
+
+        return View("mensagens", notificacaoVm);
+    }
+        
+    [HttpGet, Route("/conta/{id:int}/fechar")]
+    public ViewResult Fechar(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioConta = new RepositorioContaEmOrm(db);
+
+        var conta = repositorioConta.SelecionarPorId(id);
+
+        var fecharContaVm = new FecharContaViewModel
+        {
+            Id = conta.Id,
+            Titular = conta.Titular,
+            Mesa = conta.Mesa.Numero,
+            Garcom = conta.Garcom.Nome,
+            ValorTotal = conta.CalcularValorTotal(),
+            Pedidos = conta.Pedidos.Select(p =>
             {
-                Mesas = mesas.ToList(),
-                Garcons = garcons.ToList()
-            };
+                return new PedidoContaViewModel
+                {
+                    Id = p.Id,
+                    Produto = p.Produto.Nome,
+                    QuantidadeSolicitada = p.QuantidadeSolicitada,
+                    TotalParcial = p.CalcularTotalParcial()
+                };
+            })
+        };
 
-            return View(abrirContaVm);
-        }
+        return View(fecharContaVm);
+    }
 
-        [HttpPost]
-        public ViewResult Abrir(AbrirContaViewModel abrirContaVm)
+    [HttpPost, Route("/conta/{id:int}/fechar")]
+    public ViewResult FecharConfirmado(FecharContaViewModel fecharContaVm)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioConta = new RepositorioContaEmOrm(db);
+
+        var contaSelecionada = repositorioConta.SelecionarPorId(fecharContaVm.Id);
+
+        contaSelecionada.Fechar();
+
+        repositorioConta.AtualizarStatus(contaSelecionada);
+
+        var notificacaoVm = new NotificacaoViewModel
         {
-            var db = new ControleDeBarDbContext();
-            var repositorioConta = new RepositorioContaEmOrm(db);
-            var repositorioMesa = new RepositorioMesaEmOrm(db);
-            var repositoriogarcom = new RepositorioGarcomEmOrm(db);
+            Mensagem = $"O registro com o ID [{contaSelecionada.Id}] foi fechada com sucesso!",
+            LinkRedirecionamento =  "/conta/listar"
+        };
 
-            var mesa = repositorioMesa.SelecionarPorId(abrirContaVm.IdMesa);
-            var garcom = repositoriogarcom.SelecionarPorId(abrirContaVm.IdGarcom);
+        return View("mensagens");
+    }
 
-            var conta = new Conta(abrirContaVm.Titular, mesa, garcom);
+    [HttpGet, ActionName("gerenciar-pedidos")]
+    [Route("/conta/{id:int}/gerenciar-pedidos")]
+    public ViewResult GerenciarPedidos(int id)
+    {
+        var db = new ControleDeBarDbContext();
 
-            repositorioConta.Inserir(conta);
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
+        var repositorioConta = new RepositorioContaEmOrm(db);
 
-            var notificacaoVm = new NotificacaoViewModel
-            {
-                Mensagem = $"O registro com o ID [{conta.Id}] foi cadastrado com sucesso!",
-                LinkRedirecionamento =  "/conta/listar"
-            };
+        ViewBag.Produtos = repositorioProduto.SelecionarTodos();
+        ViewBag.Conta = repositorioConta.SelecionarPorId(id);
 
-            return View("mensagens", notificacaoVm);
-        }
+        return View();
+    }
 
-        [HttpGet, ActionName("gerenciar-pedidos")]
-        [Route("/conta/{id:int}/gerenciar-pedidos")]
-        public ViewResult GerenciarPedidos(int id)
-        {
-            var db = new ControleDeBarDbContext();
+    [HttpPost]
+    [Route("/conta/{id:int}/adicionar-pedido")]
+    public ViewResult AdicionarPedido(int id, int idProduto, int quantidadeSolicitada)
+    {
+        var db = new ControleDeBarDbContext();
 
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
-            var repositorioConta = new RepositorioContaEmOrm(db);
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
+        var repositorioConta = new RepositorioContaEmOrm(db);
 
-            ViewBag.Produtos = repositorioProduto.SelecionarTodos();
-            ViewBag.Conta = repositorioConta.SelecionarPorId(id);
+        var contaSelecionada = repositorioConta.SelecionarPorId(id);
+        var produtoSelecionado = repositorioProduto.SelecionarPorId(idProduto);
 
-            return View();
-        }
+        contaSelecionada.RegistrarPedido(produtoSelecionado, quantidadeSolicitada);
 
-        [HttpPost]
-        [Route("/conta/{id:int}/adicionar-pedido")]
-        public ViewResult AdicionarPedido(int id, int idProduto, int quantidadeSolicitada)
-        {
-            var db = new ControleDeBarDbContext();
+        repositorioConta.AtualizarPedidos(contaSelecionada, []);
 
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
-            var repositorioConta = new RepositorioContaEmOrm(db);
+        var produtos = repositorioProduto.SelecionarTodos();
 
-            var contaSelecionada = repositorioConta.SelecionarPorId(id);
-            var produtoSelecionado = repositorioProduto.SelecionarPorId(idProduto);
+        ViewBag.Produtos = produtos;
+        ViewBag.Conta = contaSelecionada;
 
-            contaSelecionada.RegistrarPedido(produtoSelecionado, quantidadeSolicitada);
+        return View("gerenciar-pedidos");
+    }
 
-            repositorioConta.AtualizarPedidos(contaSelecionada, []);
+    [HttpPost]
+    [Route("/conta/{id:int}/remover-pedido/{pedidoId:int}")]
+    public ViewResult RemoverPedido(int id, int pedidoId)
+    {
+        var db = new ControleDeBarDbContext();
 
-            var produtos = repositorioProduto.SelecionarTodos();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
+        var repositorioConta = new RepositorioContaEmOrm(db);
 
-            ViewBag.Produtos = produtos;
-            ViewBag.Conta = contaSelecionada;
+        var conta = repositorioConta.SelecionarPorId(id);
 
-            return View("gerenciar-pedidos");
-        }
+        var pedidoRemovido = conta.RemoverPedido(pedidoId);
 
-        [HttpPost]
-        [Route("/conta/{id:int}/remover-pedido/{pedidoId:int}")]
-        public ViewResult RemoverPedido(int id, int pedidoId)
-        {
-            var db = new ControleDeBarDbContext();
+        repositorioConta.AtualizarPedidos(conta, [pedidoRemovido]);
 
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
-            var repositorioConta = new RepositorioContaEmOrm(db);
+        var produtos = repositorioProduto.SelecionarTodos();
 
-            var conta = repositorioConta.SelecionarPorId(id);
+        ViewBag.Conta = conta;
+        ViewBag.Produtos = produtos;
 
-            var pedidoRemovido = conta.RemoverPedido(pedidoId);
-
-            repositorioConta.AtualizarPedidos(conta, [pedidoRemovido]);
-
-            var produtos = repositorioProduto.SelecionarTodos();
-
-            ViewBag.Conta = conta;
-            ViewBag.Produtos = produtos;
-
-            return View("gerenciar-pedidos");
-        }
-
-        [HttpGet, Route("/conta/{id:int}/fechar")]
-        public ViewResult Fechar(int id)
-        {
-            var db = new ControleDeBarDbContext();
-            var repositorioConta = new RepositorioContaEmOrm(db);
-
-            var conta = repositorioConta.SelecionarPorId(id);
-
-            ViewBag.Conta = conta;
-
-            return View();
-        }
-
-        [HttpPost, Route("/conta/{id:int}/fechar")]
-        public ViewResult FecharConfirmado(int id)
-        {
-            var db = new ControleDeBarDbContext();
-            var repositorioConta = new RepositorioContaEmOrm(db);
-
-            var contaSelecionada = repositorioConta.SelecionarPorId(id);
-
-            contaSelecionada.Fechar();
-
-            repositorioConta.AtualizarStatus(contaSelecionada);
-
-            ViewBag.Mensagem = $"A conta com o ID {contaSelecionada.Id} foi fechada com sucesso!";
-            ViewBag.Link = "/conta/listar";
-
-            return View("mensagens");
-        }
+        return View("gerenciar-pedidos");
     }
 }

@@ -78,6 +78,9 @@ public class GarcomController : Controller
 
         var garcomOriginal = repositorioGarcom.SelecionarPorId(editarGarcomVm.Id);
 
+        garcomOriginal.Nome = editarGarcomVm.Nome;
+        garcomOriginal.CPF = editarGarcomVm.CPF;
+
         repositorioGarcom.Editar(garcomOriginal);
 
         var notificacaoVm = new NotificacaoViewModel

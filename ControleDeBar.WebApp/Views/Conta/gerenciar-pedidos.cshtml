@@ -1,44 +1,38 @@
-﻿@using ControleDeBar.Dominio.ModuloConta
-@using ControleDeBar.Dominio.ModuloProduto
+﻿@model ControleDeBar.WebApp.Models.GerenciarPedidosViewModel
 
 @{
     Layout = "_Layout";
     ViewBag.Title = "Gerenciar Pedidos da Conta";
-    Conta conta = ViewBag.Conta;
-    List<Produto> produtos = ViewBag.Produtos;
 }
 
 <div class="row">
     <div class="mt-2">
-        <label class="control-label"><strong>Titular:</strong> @conta.Titular</label>
+        <label class="control-label"><strong>Titular:</strong> @Model.Conta.Titular</label>
     </div>
 
     <div class="mt-2">
-        <label class="control-label"><strong>Mesa:</strong> @conta.Mesa.Numero</label>
+        <label class="control-label"><strong>Mesa:</strong> @Model.Conta.Mesa</label>
     </div>
 
     <div class="mt-2">
-        <label class="control-label"><strong>Garçom:</strong> @conta.Garcom.Nome</label>
+        <label class="control-label"><strong>Garçom:</strong> @Model.Conta.Garcom</label>
     </div>
 </div>
 
 <div class="row mt-3">
     <div class="col-lg-6 d-grid gap-3">
-        <form class="d-flex gap-2 align-items-center" action="/conta/@conta.Id/adicionar-pedido" method="post">
+        <form class="d-flex gap-2 align-items-center" asp-action="AdicionarPedido">
             <div class="col-6">
                 <label class="control-label">Produto: </label>
 
-                <select class="form-select" name="idProduto">
-                    @foreach (var produto in produtos)
-                    {
-                        <option value="@produto.Id">@produto.Nome</option>
-                    }
+                <select class="form-select" asp-for="IdProduto" asp-items="Model.Produtos">
+                    <option></option>
                 </select>
             </div>
 
             <div class="col-3">
                 <label class="control-label">Quantidade: </label>
-                <input type="number" value="1" name="quantidadeSolicitada" class="form-control" />
+                <input type="number" asp-for="QuantidadeSolicitada" class="form-control" />
             </div>
 
             <button class="btn btn-primary align-self-end col">
@@ -57,16 +51,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var pedido in conta.Pedidos)
+                @foreach (var pedido in Model.Conta.Pedidos)
                 {
                     <tr>
                         <td>@pedido.Id</td>
-                        <td>@pedido.Produto.Nome</td>
+                        <td>@pedido.Produto</td>
                         <td>@pedido.QuantidadeSolicitada</td>
-                        <td>@pedido.CalcularTotalParcial().ToString("C2")</td>
+                        <td>@pedido.TotalParcial.ToString("C2")</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <form action="/conta/@conta.Id/remover-pedido/@pedido.Id" method="post">
+                                <form asp-action="RemoverPedido">
                                     <button class="btn btn-danger">
                                         <i class="bi bi-trash3"></i>
                                     </button>

@@ -1,111 +1,140 @@
 ﻿using ControleDeBar.Dominio.ModuloProduto;
 using ControleDeBar.Infra.Orm.Compartilhado;
 using ControleDeBar.Infra.Orm.ModuloProduto;
+using ControleDeBar.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ControleDeBar.WebApp.Controllers
+namespace ControleDeBar.WebApp.Controllers;
+
+public class ProdutoController : Controller
 {
-    public class ProdutoController : Controller
+    public ViewResult Listar()
     {
-        public ViewResult Listar()
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
+
+        var produtos = repositorioProduto.SelecionarTodos();
+
+        var listarProdutosVm = produtos
+            .Select(p => new ListarProdutoViewModel { Id = p.Id, Nome = p.Nome, Valor = p.Valor });
+
+        return View(listarProdutosVm);
+    }
+
+    public ViewResult Inserir()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public ViewResult Inserir(InserirProdutoViewModel inserirProdutoVm)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
+
+        var produto = new Produto(inserirProdutoVm.Nome, inserirProdutoVm.Valor);
+
+        repositorioProduto.Inserir(produto);
+
+        var notificacaoVm = new NotificacaoViewModel
         {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
+            Mensagem = $"O registro com o ID [{produto.Id}] foi inserido com sucesso!",
+            LinkRedirecionamento =  "/produto/listar"
+        };
+        HttpContext.Response.StatusCode = 201;
 
-            var produtos = repositorioProduto.SelecionarTodos();
+        return View("mensagens", notificacaoVm);
+    }
 
-            ViewBag.Produtos = produtos;
+    public ViewResult Editar(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
 
-            return View();
-        }
+        var produto = repositorioProduto.SelecionarPorId(id);
 
-        public ViewResult Inserir()
+        var editarProdutoVm = new EditarProdutoViewModel
         {
-            return View();
-        }
+            Id = id,
+            Nome = produto.Nome,
+            Valor = produto.Valor
+        };
 
-        [HttpPost]
-        public ViewResult Inserir(Produto novoProduto)
+        return View(editarProdutoVm);
+    }
+
+    [HttpPost]
+    public ViewResult Editar(EditarProdutoViewModel editarProdutoVm)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
+
+        var produtoOriginal = repositorioProduto.SelecionarPorId(editarProdutoVm.Id);
+
+        produtoOriginal.Nome = editarProdutoVm.Nome;
+        produtoOriginal.Valor = editarProdutoVm.Valor;
+        
+        repositorioProduto.Editar(produtoOriginal);
+
+        var notificacaoVm = new NotificacaoViewModel
         {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
+            Mensagem = $"O registro com o ID [{produtoOriginal.Id}] foi editado com sucesso!",
+            LinkRedirecionamento =  "/produto/listar"
+        };
 
-            repositorioProduto.Inserir(novoProduto);
+        return View("mensagens", notificacaoVm);
+    }
 
-            ViewBag.Mensagem = $"O registro com o ID {novoProduto.Id} foi cadastrado com sucesso!";
-            ViewBag.Link = "/produto/listar";
+    public ViewResult Excluir(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
 
-            HttpContext.Response.StatusCode = 201;
+        var produto = repositorioProduto.SelecionarPorId(id);
 
-            return View("mensagens");
-        }
-
-        public ViewResult Editar(int id)
+        var excluirProdutoVm = new ExcluirProdutoViewModel
         {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
+            Id = id,
+            Nome = produto.Nome,
+            Valor = produto.Valor
+        };
 
-            var produto = repositorioProduto.SelecionarPorId(id);
+        return View(excluirProdutoVm);
+    }
 
-            ViewBag.Produto = produto;
+    [HttpPost, ActionName("excluir")]
+    public ViewResult ExcluirConfirmado(ExcluirProdutoViewModel excluirProdutoVm)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
 
-            return View();
-        }
+        var produto = repositorioProduto.SelecionarPorId(excluirProdutoVm.Id);
 
-        [HttpPost]
-        public ViewResult Editar(int id, Produto produtoAtualizado)
+        repositorioProduto.Excluir(produto);
+
+        var notificacaoVm = new NotificacaoViewModel
         {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
+            Mensagem = $"O registro com o ID [{produto.Id}] foi excluído com sucesso!",
+            LinkRedirecionamento =  "/produto/listar"
+        };
 
-            var produtoOriginal = repositorioProduto.SelecionarPorId(id);
+        return View("mensagens", notificacaoVm);
+    }
 
-            repositorioProduto.Editar(produtoOriginal, produtoAtualizado);
+    public ViewResult Detalhes(int id)
+    {
+        var db = new ControleDeBarDbContext();
+        var repositorioProduto = new RepositorioProdutoEmOrm(db);
 
-            ViewBag.Mensagem = $"O registro com o ID {produtoOriginal.Id} foi editado com sucesso!";
-            ViewBag.Link = "/produto/listar";
+        var produto = repositorioProduto.SelecionarPorId(id);
 
-            return View("mensagens");
-        }
-
-        public ViewResult Excluir(int id)
+        var detalhesProdutoVm = new DetalhesProdutoViewModel
         {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
+            Id = id,
+            Nome = produto.Nome,
+            Valor = produto.Valor
+        };
 
-            var produto = repositorioProduto.SelecionarPorId(id);
-
-            ViewBag.Produto = produto;
-
-            return View();
-        }
-
-        [HttpPost, ActionName("excluir")]
-        public ViewResult ExcluirConfirmado(int id)
-        {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
-
-            var produto = repositorioProduto.SelecionarPorId(id);
-
-            repositorioProduto.Excluir(produto);
-
-            ViewBag.Mensagem = $"O registro com o ID {produto.Id} foi excluído com sucesso!";
-            ViewBag.Link = "/produto/listar";
-
-            return View("mensagens");
-        }
-
-        public ViewResult Detalhes(int id)
-        {
-            var db = new ControleDeBarDbContext();
-            var repositorioProduto = new RepositorioProdutoEmOrm(db);
-
-            var produto = repositorioProduto.SelecionarPorId(id);
-
-            ViewBag.Produto = produto;
-
-            return View();
-        }
+        return View(detalhesProdutoVm);
     }
 }

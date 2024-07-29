@@ -1,9 +1,8 @@
-﻿@using ControleDeBar.Dominio.ModuloConta
+﻿@model IEnumerable<ControleDeBar.WebApp.Models.ListarContaViewModel>
 
 @{
     Layout = "_Layout";
     ViewBag.Title = "Listagem de Contas";
-    List<Conta> contas = ViewBag.Contas;
 }
 
 <div class="d-flex gap-2 mt-3">
@@ -18,7 +17,7 @@
 
 
 <div class="row mt-3">
-    @if (contas.Count == 0)
+    @if (!Model.Any())
     {
         <h3 class="fs-2">Nenhuma conta foi encontrada!</h3>
     }
@@ -38,15 +37,15 @@
             </thead>
             
             <tbody>
-                @foreach (var conta in contas)
+                @foreach (var conta in Model)
                 {
                     <tr>
                         <td>@conta.Id</td>
                         <td>@conta.Abertura</td>
                         <td>@conta.Titular</td>
-                        <td>@conta.Mesa.Numero</td>
-                        <td>@conta.Garcom.Nome</td>
-                        <td>@(conta.EstaAberta ? "Aberta" : "Fechada")</td>
+                        <td>@conta.Mesa</td>
+                        <td>@conta.Garcom</td>
+                        <td>@conta.EstaAberta</td>
                         <td>
                             <div class="d-flex gap-2 justify-content-center">
                                 <a class="btn btn-primary btn-sm" href="/conta/@conta.Id/gerenciar-pedidos">
