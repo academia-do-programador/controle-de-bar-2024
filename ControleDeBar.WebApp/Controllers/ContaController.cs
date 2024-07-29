@@ -148,7 +148,7 @@ public class ContaController : Controller
             LinkRedirecionamento =  "/conta/listar"
         };
 
-        return View("mensagens");
+        return View("mensagens", notificacaoVm);
     }
 
     [HttpGet, ActionName("gerenciar-pedidos")]

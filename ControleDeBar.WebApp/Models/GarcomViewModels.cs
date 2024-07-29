@@ -9,7 +9,10 @@ public class InserirGarcomViewModel
     public string Nome { get; set; }
     
     [Required(ErrorMessage = "O campo CPF é obrigatório!")]
-    [MinLength(11, ErrorMessage = "O campo CPF necessita de ao menos 11 caracteres")]
+    [RegularExpression(
+        @"([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})",
+        ErrorMessage = "O CPF precisa seguir o padrão 000.000.000-00"
+    )]
     public string CPF { get; set; }
 }
 
@@ -22,7 +25,10 @@ public class EditarGarcomViewModel
     public string Nome { get; set; }
     
     [Required(ErrorMessage = "O campo CPF é obrigatório!")]
-    [MinLength(11, ErrorMessage = "O campo CPF necessita de ao menos 11 caracteres")]
+    [RegularExpression(
+        @"[0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2}",
+        ErrorMessage = "O CPF precisa seguir o padrão 000.000.000-00"
+    )]
     public string CPF { get; set; }
 }
 

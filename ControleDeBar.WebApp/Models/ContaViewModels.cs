@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ControleDeBar.WebApp.Models;
@@ -15,12 +16,18 @@ public class GerenciarPedidosViewModel
 
 public class AbrirContaViewModel
 {
+    [Required(ErrorMessage = "O campo nome é obrigatório!")]
+    [MinLength(3, ErrorMessage = "O campo titular necessita de ao menos 3 caracteres")]
     public string Titular { get; set; }
+
+    [Required(ErrorMessage = "É necessário selecionar uma mesa!")]
+    public int IdMesa { get; set; }
+    
+    [Required(ErrorMessage = "É necessário selecionar um garçom!")]
+    public int IdGarcom { get; set; }
+    
     public List<SelectListItem> Mesas { get; set; }
     public List<SelectListItem> Garcons { get; set; }
-
-    public int IdMesa { get; set; }
-    public int IdGarcom { get; set; }
 }
 
 public class FecharContaViewModel

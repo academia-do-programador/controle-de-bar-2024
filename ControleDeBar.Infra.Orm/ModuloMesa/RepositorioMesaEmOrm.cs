@@ -15,20 +15,6 @@ namespace ControleDeBar.Infra.Orm.ModuloMesa
             return dbContext.Mesas;
         }
 
-        public override bool Editar(Mesa registroOriginal, Mesa registroAtualizado)
-        {
-            if (registroOriginal == null || registroAtualizado == null)
-                return false;
-
-            registroOriginal.AtualizarInformacoes(registroAtualizado);
-
-            ObterRegistros().Update(registroOriginal);
-
-            dbContext.SaveChanges();
-
-            return true;
-        }
-
         public override Mesa SelecionarPorId(int id)
         {
             return dbContext.Mesas

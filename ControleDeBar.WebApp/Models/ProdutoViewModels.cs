@@ -7,7 +7,11 @@ public class InserirProdutoViewModel
     [Required(ErrorMessage = "O campo nome é obrigatório!")]
     public string Nome { get; set; }
     
-    [Range(0.0, double.MaxValue, ErrorMessage = "O campo valor deve ser maior que zero!")]
+    [Range(
+        0.0,
+        double.MaxValue,
+        ErrorMessage = "O campo valor deve ser maior que zero!"
+    )]
     public decimal Valor { get; set; }
 }
 
@@ -18,7 +22,11 @@ public class EditarProdutoViewModel
     [Required(ErrorMessage = "O campo nome é obrigatório!")]
     public string Nome { get; set; }
     
-    [Range(0.0, double.MaxValue, ErrorMessage = "O campo valor deve ser maior que zero!")]
+    [Range(
+        0.0,
+        double.MaxValue,
+        ErrorMessage = "O campo valor deve ser maior que zero!"
+    )]
     public decimal Valor { get; set; }
 }
 

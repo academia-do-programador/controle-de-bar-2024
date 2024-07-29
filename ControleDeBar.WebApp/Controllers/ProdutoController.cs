@@ -29,6 +29,9 @@ public class ProdutoController : Controller
     [HttpPost]
     public ViewResult Inserir(InserirProdutoViewModel inserirProdutoVm)
     {
+        if (!ModelState.IsValid)
+            return View(inserirProdutoVm);
+        
         var db = new ControleDeBarDbContext();
         var repositorioProduto = new RepositorioProdutoEmOrm(db);
 
@@ -66,6 +69,9 @@ public class ProdutoController : Controller
     [HttpPost]
     public ViewResult Editar(EditarProdutoViewModel editarProdutoVm)
     {
+        if (!ModelState.IsValid)
+            return View(editarProdutoVm);
+        
         var db = new ControleDeBarDbContext();
         var repositorioProduto = new RepositorioProdutoEmOrm(db);
 
