@@ -25,29 +25,7 @@ public class ContaController : Controller
         };
 
         var listarContasVm = contas
-            .Select(c =>
-            {
-                return new ListarContaViewModel
-                {
-                    Id = c.Id,
-                    Titular = c.Titular,
-                    Mesa = c.Mesa.Numero,
-                    Garcom = c.Garcom.Nome,
-                    EstaAberta = c.EstaAberta ? "Aberta" : "Fechada",
-                    Abertura = c.Abertura,
-                    Fechamento = c.Fechamento,
-                    Pedidos = c.Pedidos.Select(p =>
-                    {
-                        return new PedidoContaViewModel
-                        {
-                            Id = p.Id,
-                            Produto = p.Produto.Nome,
-                            QuantidadeSolicitada = p.QuantidadeSolicitada,
-                            TotalParcial = p.CalcularTotalParcial()
-                        };
-                    })
-                };
-            });
+            .Select(MapearListarContaViewModel);
 
         return View(listarContasVm);
     }
@@ -67,11 +45,7 @@ public class ContaController : Controller
             .SelecionarTodos()
             .Select(x => new SelectListItem(x.Nome, x.Id.ToString()));
 
-        var abrirContaVm = new AbrirContaViewModel
-        {
-            Mesas = mesas.ToList(),
-            Garcons = garcons.ToList()
-        };
+        var abrirContaVm = MapearAbrirContaViewModel(mesas, garcons);
 
         return View(abrirContaVm);
     }
@@ -87,14 +61,14 @@ public class ContaController : Controller
         var mesa = repositorioMesa.SelecionarPorId(abrirContaVm.IdMesa);
         var garcom = repositoriogarcom.SelecionarPorId(abrirContaVm.IdGarcom);
 
-        var conta = new Conta(abrirContaVm.Titular, mesa, garcom);
+        var novaConta = new Conta(abrirContaVm.Titular, mesa, garcom);
 
-        repositorioConta.Inserir(conta);
+        repositorioConta.Inserir(novaConta);
 
         var notificacaoVm = new NotificacaoViewModel
         {
-            Mensagem = $"O registro com o ID [{conta.Id}] foi cadastrado com sucesso!",
-            LinkRedirecionamento =  "/conta/listar"
+            Mensagem = $"A conta com o ID [{novaConta.Id}] foi aberta com sucesso!",
+            LinkRedirecionamento = "/conta/listar"
         };
 
         return View("mensagens", notificacaoVm);
@@ -108,29 +82,12 @@ public class ContaController : Controller
 
         var conta = repositorioConta.SelecionarPorId(id);
 
-        var fecharContaVm = new FecharContaViewModel
-        {
-            Id = conta.Id,
-            Titular = conta.Titular,
-            Mesa = conta.Mesa.Numero,
-            Garcom = conta.Garcom.Nome,
-            ValorTotal = conta.CalcularValorTotal(),
-            Pedidos = conta.Pedidos.Select(p =>
-            {
-                return new PedidoContaViewModel
-                {
-                    Id = p.Id,
-                    Produto = p.Produto.Nome,
-                    QuantidadeSolicitada = p.QuantidadeSolicitada,
-                    TotalParcial = p.CalcularTotalParcial()
-                };
-            })
-        };
+        var fecharContaVm = MapearFecharContaViewModel(conta);
 
         return View(fecharContaVm);
     }
 
-    [HttpPost, Route("/conta/{id:int}/fechar")]
+    [HttpPost]
     public ViewResult FecharConfirmado(FecharContaViewModel fecharContaVm)
     {
         var db = new ControleDeBarDbContext();
@@ -144,8 +101,8 @@ public class ContaController : Controller
 
         var notificacaoVm = new NotificacaoViewModel
         {
-            Mensagem = $"O registro com o ID [{contaSelecionada.Id}] foi fechada com sucesso!",
-            LinkRedirecionamento =  "/conta/listar"
+            Mensagem = $"A conta com o ID [{contaSelecionada.Id}] foi fechada com sucesso!",
+            LinkRedirecionamento = "/conta/listar"
         };
 
         return View("mensagens", notificacaoVm);
@@ -211,5 +168,60 @@ public class ContaController : Controller
         ViewBag.Produtos = produtos;
 
         return View("gerenciar-pedidos");
+    }
+    
+    private static ListarContaViewModel MapearListarContaViewModel(Conta c)
+    {
+        return new ListarContaViewModel
+        {
+            Id = c.Id,
+            Titular = c.Titular,
+            Mesa = c.Mesa.Numero,
+            Garcom = c.Garcom.Nome,
+            EstaAberta = c.EstaAberta ? "Aberta" : "Fechada",
+            Abertura = c.Abertura,
+            Fechamento = c.Fechamento,
+            Pedidos = c.Pedidos.Select(p =>
+            {
+                return new PedidoContaViewModel
+                {
+                    Id = p.Id,
+                    Produto = p.Produto.Nome,
+                    QuantidadeSolicitada = p.QuantidadeSolicitada,
+                    TotalParcial = p.CalcularTotalParcial()
+                };
+            })
+        };
+    }
+    
+    private static AbrirContaViewModel MapearAbrirContaViewModel(IEnumerable<SelectListItem> mesas, IEnumerable<SelectListItem> garcons)
+    {
+        return new AbrirContaViewModel
+        {
+            Mesas = mesas.ToList(),
+            Garcons = garcons.ToList()
+        };
+    }
+    
+    private static FecharContaViewModel MapearFecharContaViewModel(Conta conta)
+    {
+        return new FecharContaViewModel
+        {
+            Id = conta.Id,
+            Titular = conta.Titular,
+            Mesa = conta.Mesa.Numero,
+            Garcom = conta.Garcom.Nome,
+            ValorTotal = conta.CalcularValorTotal(),
+            Pedidos = conta.Pedidos.Select(p =>
+            {
+                return new PedidoContaViewModel
+                {
+                    Id = p.Id,
+                    Produto = p.Produto.Nome,
+                    QuantidadeSolicitada = p.QuantidadeSolicitada,
+                    TotalParcial = p.CalcularTotalParcial()
+                };
+            })
+        };
     }
 }
