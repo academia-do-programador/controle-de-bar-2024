@@ -10,7 +10,7 @@ public class InserirGarcomViewModel
     
     [Required(ErrorMessage = "O campo CPF é obrigatório!")]
     [RegularExpression(
-        @"([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})",
+        @"[0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2}",
         ErrorMessage = "O CPF precisa seguir o padrão 000.000.000-00"
     )]
     public string CPF { get; set; }

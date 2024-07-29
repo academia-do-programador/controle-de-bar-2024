@@ -3,20 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ControleDeBar.WebApp.Models;
 
-public class GerenciarPedidosViewModel
-{
-    public ListarContaViewModel Conta { get; set; }
-    public IEnumerable<SelectListItem> Produtos { get; set; }
-
-    public int IdProduto { get; set; }
-    public int QuantidadeSolicitada { get; set; }
-    
-    public int IdPedido { get; set; }
-}
-
 public class AbrirContaViewModel
 {
-    [Required(ErrorMessage = "O campo nome é obrigatório!")]
     [MinLength(3, ErrorMessage = "O campo titular necessita de ao menos 3 caracteres")]
     public string Titular { get; set; }
 
@@ -51,6 +39,17 @@ public class ListarContaViewModel
     public DateTime Abertura { get; set; }
     public DateTime Fechamento { get; set; }
     public IEnumerable<PedidoContaViewModel> Pedidos { get; set; }
+}
+
+public class GerenciarPedidosViewModel
+{
+    public ListarContaViewModel Conta { get; set; }
+    public IEnumerable<SelectListItem> Produtos { get; set; }
+
+    public int IdProduto { get; set; }
+    public int QuantidadeSolicitada { get; set; }
+    
+    public int IdPedido { get; set; }
 }
 
 public class PedidoContaViewModel
