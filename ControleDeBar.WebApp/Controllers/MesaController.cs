@@ -96,41 +96,58 @@ public class MesaController : Controller
 
     public ViewResult Excluir(int id)
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
 
-        Mesa mesa = repositorioMesa.SelecionarPorId(id);
+        var mesa = repositorioMesa.SelecionarPorId(id);
 
-        ViewBag.Mesa = mesa;
+        var excluirMesaVm = new ExcluirMesaViewModel
+        {
+            Id = id,
+            Numero = mesa.Numero,
+            Ocupada = mesa.Ocupada ? "Ocupada" : "Livre",
+            Contas = mesa.Contas
+                .Select(c => new ListarContaMesaViewModel { Titular = c.Titular })
+        };
 
-        return View();
+        return View(excluirMesaVm);
     }
 
     [HttpPost, ActionName("excluir")]
-    public ViewResult ExcluirConfirmado(int id)
+    public ViewResult ExcluirConfirmado(ExcluirMesaViewModel excluirMesaVm)
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
 
-        Mesa mesa = repositorioMesa.SelecionarPorId(id);
+        var mesa = repositorioMesa.SelecionarPorId(excluirMesaVm.Id);
 
         repositorioMesa.Excluir(mesa);
 
-        ViewBag.Mensagem = $"O registro com o ID {mesa.Id} foi excluído com sucesso!";
-        ViewBag.Link = "/mesa/listar";
+        var mensagem = new MensagemViewModel()
+        {
+            Mensagem = $"O registro com o ID {mesa.Id} foi excluído com sucesso!",
+            LinkRedirecionamento = "/mesa/listar"
+        };
 
-        return View("mensagens");
+        return View("mensagens", mensagem);
     }
 
     public ViewResult Detalhes(int id)
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
 
-        Mesa mesa = repositorioMesa.SelecionarPorId(id);
+        var mesa = repositorioMesa.SelecionarPorId(id);
 
-        ViewBag.Mesa = mesa;
+        var detalhesMesaVm = new DetalhesMesaViewModel
+        {
+            Id = id,
+            Numero = mesa.Numero,
+            Ocupada = mesa.Ocupada ? "Ocupada" : "Livre",
+            Contas = mesa.Contas
+                .Select(c => new ListarContaMesaViewModel { Titular = c.Titular })
+        };
 
-        return View();
+        return View(detalhesMesaVm);
     }
 }
