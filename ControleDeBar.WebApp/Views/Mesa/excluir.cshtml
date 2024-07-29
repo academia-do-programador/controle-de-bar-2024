@@ -1,4 +1,8 @@
-﻿@{
+﻿@using ControleDeBar.WebApp.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ControleDeBar.WebApp.Models.ExcluirMesaViewModel
+
+@{
     var mesa = ViewBag.Mesa;
     Layout = "_Layout";
     ViewBag.Title = "Exclusão de Mesa";
@@ -9,17 +13,17 @@
         <label class="fs-5"><strong>Mesa:</strong> @mesa.Numero</label>
         
         <label><strong>Id:</strong> [@mesa.Id]</label>
-        <label><strong>Status:</strong> @(mesa.Ocupada ? "Ocupada" : "Livre")</label>
+        <label><strong>Status:</strong> @mesa.Ocupada</label>
         
-        @if (mesa.Contas.Count > 0)
+        @if (mesa.Contas.Any())
         {
             <div class="mt-3">
                 <h5>Contas relacionadas à mesa:</h5>
                 
                 <ul>
-                    @foreach (var conta in mesa.Contas)
+                    @foreach (ListarContaMesaViewModel conta in mesa.Contas)
                     {
-                        <li>@conta.ToString()</li>
+                        <li>@conta.Titular</li>
                     }
                 </ul>
             </div>
@@ -29,7 +33,7 @@
             Deseja realmente confirmar a exclusão? Não será possível recuperar os dados excluídos posteriormente.
         </p>
 
-        <form class="mt-2 d-grid gap-2 d-md-block" action="/mesa/excluir/@mesa.Id" method="post">
+        <form class="mt-2 d-grid gap-2 d-md-block" asp-action="excluir">
             <button class="btn btn-danger px-5">
                 <i class="bi bi-trash-fill me-1"></i>
                 Excluir

@@ -1,77 +1,77 @@
 # Controle de Bar
  
-O Sr. João do Nascimento, proprietário do Bar da Galera, precisa controlar melhor o que cada cliente consumiu em seu estabelecimento, para consequentemente aumentar a produtividade e alavancar o sucesso do seu bar. A equipe do Bar da Galera precisa de mais agilidade na realização das atividades e processos, e desta forma precisam de um sistema que ajude a controlar as questões financeiras do estabelecimento.
+O Sr. JoÃ£o do Nascimento, proprietÃ¡rio do Bar da Galera, precisa controlar melhor o que cada cliente consumiu em seu estabelecimento, para consequentemente aumentar a produtividade e alavancar o sucesso do seu bar. A equipe do Bar da Galera precisa de mais agilidade na realizaÃ§Ã£o das atividades e processos, e desta forma precisam de um sistema que ajude a controlar as questÃµes financeiras do estabelecimento.
 
-O programa proposto deve registrar o que os clientes consumiram, registrar o garçom que atende as mesas e ao final do dia ser capaz de fornecer o valor faturado pelo restaurante.
+O programa proposto deve registrar o que os clientes consumiram, registrar o garÃ§om que atende as mesas e ao final do dia ser capaz de fornecer o valor faturado pelo restaurante.
 
-Geralmente os clientes ficam localizados em suas mesas. Eles realizam seus pedidos e um garçom registra o pedido na conta da mesa. Os pedidos podem ser adicionados e removidos de uma determinada conta. O total da conta é emitido para uma mesa específica.
+Geralmente os clientes ficam localizados em suas mesas. Eles realizam seus pedidos e um garÃ§om registra o pedido na conta da mesa. Os pedidos podem ser adicionados e removidos de uma determinada conta. O total da conta Ã© emitido para uma mesa especÃ­fica.
 
-O sistema deve permitir a possibilidade de o Sr. João visualizar as contas que estão abertas e o total faturado no dia. 
+O sistema deve permitir a possibilidade de o Sr. JoÃ£o visualizar as contas que estÃ£o abertas e o total faturado no dia. 
 
 ---
 
 ## Requisitos Funcionais:
 
-- O sistema deve permitir que o garçom registre os pedidos dos clientes em suas respectivas mesas.
-- O sistema deve permitir a adição e remoção de pedidos/produtos em uma determinada conta.
-- O sistema deve gerar relatório diário de faturamento do restaurante.
-- O sistema deve permitir que os funcionários cadastrem produtos.
-- O sistema deve permitir que os funcionários cadastrem mesas.
-- O sistema deve permitir que os funcionários cadastrem garçons.
-- O sistema deve permitir visualizar as contas que estão em aberto.
-- O sistema deve permitir visualizar o total faturado no dia, na semana e no mês.
+- O sistema deve permitir que o garÃ§om registre os pedidos dos clientes em suas respectivas mesas.
+- O sistema deve permitir a adiÃ§Ã£o e remoÃ§Ã£o de pedidos/produtos em uma determinada conta.
+- O sistema deve gerar relatÃ³rio diÃ¡rio de faturamento do restaurante.
+- O sistema deve permitir que os funcionÃ¡rios cadastrem produtos.
+- O sistema deve permitir que os funcionÃ¡rios cadastrem mesas.
+- O sistema deve permitir que os funcionÃ¡rios cadastrem garÃ§ons.
+- O sistema deve permitir visualizar as contas que estÃ£o em aberto.
+- O sistema deve permitir visualizar o total faturado no dia, na semana e no mÃªs.
 
-## Requisitos Não Funcionais:
+## Requisitos NÃ£o Funcionais:
 
-**Persistência das informações**
+**PersistÃªncia das informaÃ§Ãµes**
 - Os dados devem ser salvos e recuperados em banco de dados utilizando ORM.
 
 **Arquitetural**
 - Deve-se trabalhar utilizando o modelo de camadas
 
-**Interfaces com Usuário**
-- A visualização dos registros deve ser apresentada utilizando o componente DataGridView
+**Interfaces com UsuÃ¡rio**
+- A visualizaÃ§Ã£o dos registros deve ser apresentada utilizando o componente DataGridView
 - As telas de cadastro devem aparecer centralizadas
-- Não deve permitir redimensionar telas de cadastro
-- Não deve permitir minimizar ou maximizar telas de cadastro
+- NÃ£o deve permitir redimensionar telas de cadastro
+- NÃ£o deve permitir minimizar ou maximizar telas de cadastro
 - As telas de cadastro devem ser dialogs
-- As telas de cadastro devem ter um título
-- Os elementos das telas de cadastro devem seguir um padrão de posicionamento
+- As telas de cadastro devem ter um tÃ­tulo
+- Os elementos das telas de cadastro devem seguir um padrÃ£o de posicionamento
 - Os elementos das telas de cadastro devem estar alinhados
 - O nome do sistema deve ser apresentado na tela principal
-- As notificações para usuário devem ser apresentadas seguindo um padrão
-- As telas de cadastro devem ter uma opção que fecha a janela e não grava as alterações
-- As telas de cadastro devem ter uma opção que grava as alterações
-- A tabulação dos campos deve seguir uma sequência lógica iniciando pelos campos superiores
-- As alterações realizadas devem ser gravadas e devem manter uma referência única em todas as telas
+- As notificaÃ§Ãµes para usuÃ¡rio devem ser apresentadas seguindo um padrÃ£o
+- As telas de cadastro devem ter uma opÃ§Ã£o que fecha a janela e nÃ£o grava as alteraÃ§Ãµes
+- As telas de cadastro devem ter uma opÃ§Ã£o que grava as alteraÃ§Ãµes
+- A tabulaÃ§Ã£o dos campos deve seguir uma sequÃªncia lÃ³gica iniciando pelos campos superiores
+- As alteraÃ§Ãµes realizadas devem ser gravadas e devem manter uma referÃªncia Ãºnica em todas as telas
 - As telas de listagem devem permitir selecionar apenas um registro
 
 ---
 
 ## Requisitos
 
-- .NET SDK (recomendado .NET 8.0 ou superior) para compilação e execução do projeto.
+- .NET SDK (recomendado .NET 8.0 ou superior) para compilaÃ§Ã£o e execuÃ§Ã£o do projeto.
 
 ---
 
 ## Como Usar
 
-#### Clone o Repositório
+#### Clone o RepositÃ³rio
 ```
 git clone https://github.com/academia-do-programador/controle-de-bar--2024.git
 ```
 
-#### Navegue até a pasta raiz da solução
+#### Navegue atÃ© a pasta raiz da soluÃ§Ã£o
 ```
 cd controle-de-bar--2024
 ```
 
-#### Restaure as dependências
+#### Restaure as dependÃªncias
 ```
 dotnet restore
 ```
 
-#### Navegue até a pasta do projeto
+#### Navegue atÃ© a pasta do projeto
 ```
 cd ControleDeBar.WinApp
 ```

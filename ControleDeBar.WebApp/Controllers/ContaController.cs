@@ -4,7 +4,9 @@ using ControleDeBar.Infra.Orm.ModuloConta;
 using ControleDeBar.Infra.Orm.ModuloGarcom;
 using ControleDeBar.Infra.Orm.ModuloMesa;
 using ControleDeBar.Infra.Orm.ModuloProduto;
+using ControleDeBar.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ControleDeBar.WebApp.Controllers
 {
@@ -34,34 +36,45 @@ namespace ControleDeBar.WebApp.Controllers
             var repositorioMesa = new RepositorioMesaEmOrm(db);
             var repositorioGarcom = new RepositorioGarcomEmOrm(db);
 
-            var mesas = repositorioMesa.SelecionarTodos();
-            var garcons = repositorioGarcom.SelecionarTodos();
+            var mesas = repositorioMesa
+                .SelecionarTodos()
+                .Select(x => new SelectListItem(x.Numero, x.Id.ToString()));
+            
+            var garcons = repositorioGarcom
+                .SelecionarTodos()
+                .Select(x => new SelectListItem(x.Nome, x.Id.ToString()));
 
-            ViewBag.Mesas = mesas;
-            ViewBag.Garcons = garcons;
+            var abrirContaVm = new AbrirContaViewModel
+            {
+                Mesas = mesas.ToList(),
+                Garcons = garcons.ToList()
+            };
 
-            return View();
+            return View(abrirContaVm);
         }
 
         [HttpPost]
-        public ViewResult Abrir(string titular, int idMesa, int idGarcom)
+        public ViewResult Abrir(AbrirContaViewModel abrirContaVm)
         {
             var db = new ControleDeBarDbContext();
             var repositorioConta = new RepositorioContaEmOrm(db);
             var repositorioMesa = new RepositorioMesaEmOrm(db);
             var repositoriogarcom = new RepositorioGarcomEmOrm(db);
 
-            var mesa = repositorioMesa.SelecionarPorId(idMesa);
-            var garcom = repositoriogarcom.SelecionarPorId(idGarcom);
+            var mesa = repositorioMesa.SelecionarPorId(abrirContaVm.IdMesa);
+            var garcom = repositoriogarcom.SelecionarPorId(abrirContaVm.IdGarcom);
 
-            var conta = new Conta(titular, mesa, garcom);
+            var conta = new Conta(abrirContaVm.Titular, mesa, garcom);
 
             repositorioConta.Inserir(conta);
 
-            ViewBag.Mensagem = $"O registro com o ID [{conta.Id}] foi cadastrado com sucesso!";
-            ViewBag.Link = "/conta/listar";
+            var notificacaoVm = new NotificacaoViewModel
+            {
+                Mensagem = $"O registro com o ID [{conta.Id}] foi cadastrado com sucesso!",
+                LinkRedirecionamento =  "/conta/listar"
+            };
 
-            return View("mensagens");
+            return View("mensagens", notificacaoVm);
         }
 
         [HttpGet, ActionName("gerenciar-pedidos")]
