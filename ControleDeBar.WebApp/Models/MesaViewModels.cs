@@ -1,4 +1,6 @@
-﻿namespace ControleDeBar.WebApp.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ControleDeBar.WebApp.Models;
 
 public class ListarMesaViewModel
 {
@@ -9,13 +11,17 @@ public class ListarMesaViewModel
 
 public class InserirMesaViewModel
 {
+    [Required(ErrorMessage = "O número da mesa é obrigatório!")]
     public string Numero { get; set; }
 }
 
 public class EditarMesaViewModel
 {
     public int Id { get; set; }
+
+    [Required(ErrorMessage = "O número da mesa é obrigatório!")]
     public string Numero { get; set; }
+
     public bool Ocupada { get; set; }
 }
 

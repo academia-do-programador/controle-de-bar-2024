@@ -37,6 +37,9 @@ public class MesaController : Controller
     [HttpPost]
     public ViewResult Inserir(InserirMesaViewModel inserirMesaVm)
     {
+        if (!ModelState.IsValid)
+            return View(inserirMesaVm);
+
         var db = new ControleDeBarDbContext();
         var repositorioMesa = new RepositorioMesaEmOrm(db);
 
@@ -75,6 +78,9 @@ public class MesaController : Controller
     [HttpPost]
     public ViewResult Editar(EditarMesaViewModel editarMesaVm)
     {
+        if (!ModelState.IsValid)
+            return View(editarMesaVm);
+
         var db = new ControleDeBarDbContext();
         var repositorioMesa = new RepositorioMesaEmOrm(db);
 
