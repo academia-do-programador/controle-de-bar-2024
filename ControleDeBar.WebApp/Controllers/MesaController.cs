@@ -1,6 +1,7 @@
 ﻿using ControleDeBar.Dominio.ModuloMesa;
 using ControleDeBar.Infra.Orm.Compartilhado;
 using ControleDeBar.Infra.Orm.ModuloMesa;
+using ControleDeBar.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleDeBar.WebApp.Controllers;
@@ -9,14 +10,23 @@ public class MesaController : Controller
 {
     public ViewResult Listar()
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
 
-        List<Mesa> mesas = repositorioMesa.SelecionarTodos();
+        var mesas = repositorioMesa.SelecionarTodos();
 
-        ViewBag.Mesas = mesas;
+        var listarMesasVm = mesas // mapeamento
+            .Select(m =>
+            {
+                return new ListarMesaViewModel
+                {
+                    Id = m.Id,
+                    Numero = m.Numero,
+                    Ocupada = m.Ocupada ? "Ocupada" : "Livre"
+                };
+            });
 
-        return View();
+        return View(listarMesasVm);
     }
 
     public ViewResult Inserir()
@@ -25,50 +35,63 @@ public class MesaController : Controller
     }
 
     [HttpPost]
-    public ViewResult Inserir(Mesa novaMesa)
+    public ViewResult Inserir(InserirMesaViewModel inserirMesaVm)
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
+
+        var novaMesa = new Mesa(inserirMesaVm.Numero);
 
         repositorioMesa.Inserir(novaMesa);
 
         HttpContext.Response.StatusCode = 201;
 
-        ViewBag.Mensagem = $"O registro com o ID {novaMesa.Id} foi cadastrado com sucesso!";
-        ViewBag.Link = "/mesa/listar";
+        var mensagem = new MensagemViewModel()
+        {
+            Mensagem = $"O registro com o ID {novaMesa.Id} foi cadastrado com sucesso!",
+            LinkRedirecionamento = "/mesa/listar"
+        };
 
-        return View("mensagens");
+        return View("mensagens", mensagem);
     }
 
     public ViewResult Editar(int id)
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
 
-        Mesa mesa = repositorioMesa.SelecionarPorId(id);
+        var mesa = repositorioMesa.SelecionarPorId(id);
 
-        ViewBag.Mesa = mesa;
+        var editarMesaVm = new EditarMesaViewModel
+        {
+            Id = id,
+            Numero = mesa.Numero,
+            Ocupada = mesa.Ocupada
+        };
 
-        return View();
+        return View(editarMesaVm);
     }
 
     [HttpPost]
-    public ViewResult Editar(int id, Mesa mesaAtualizada)
+    public ViewResult Editar(EditarMesaViewModel editarMesaVm)
     {
-        ControleDeBarDbContext db = new ControleDeBarDbContext();
-        IRepositorioMesa repositorioMesa = new RepositorioMesaEmOrm(db);
+        var db = new ControleDeBarDbContext();
+        var repositorioMesa = new RepositorioMesaEmOrm(db);
 
-        Mesa mesaOriginal = repositorioMesa.SelecionarPorId(id);
+        var mesaOriginal = repositorioMesa.SelecionarPorId(editarMesaVm.Id);
 
-        mesaAtualizada.Ocupada =
-            HttpContext.Request.Form["ocupada"] == "on";
+        mesaOriginal.Numero = editarMesaVm.Numero;
+        mesaOriginal.Ocupada = editarMesaVm.Ocupada;
 
-        repositorioMesa.Editar(mesaOriginal, mesaAtualizada);
+        repositorioMesa.Editar(mesaOriginal);
 
-        ViewBag.Mensagem = $"O registro com o ID {mesaOriginal.Id} foi editado com sucesso!";
-        ViewBag.Link = "/mesa/listar";
+        var mensagem = new MensagemViewModel()
+        {
+            Mensagem = $"O registro com o ID {mesaOriginal.Id} foi editado com sucesso!",
+            LinkRedirecionamento = "/mesa/listar"
+        };
 
-        return View("mensagens");
+        return View("mensagens", mensagem);
     }
 
     public ViewResult Excluir(int id)

@@ -1,26 +1,25 @@
-﻿@{
-    var mesa = ViewBag.Mesa;
+﻿@model EditarMesaViewModel;
 
+@{
     Layout = "_Layout";
     ViewBag.Title = "Edição de Mesa";
 }
 
 <div class="row mt-3">
     <div class="col-lg-6">
-        <form class="d-grid gap-4" action="/mesa/editar/@mesa.Id" method="post">
+        <form class="d-grid gap-4" asp-action="Editar">
         
             <div class="mt-2">
                 <label class="control-label fw-semibold" >Número da Mesa:</label>
-                <input class="form-control" type="text" name="numero" value="@mesa.Numero"/>
+                <input class="form-control" asp-for="Numero"/>
             </div>
-        
-            <div class="form-check mt-2">
-                <input disabled class="form-check-input" @(mesa.Ocupada ? "checked='checked'" : "") name="ocupada" type="checkbox" value="true">
-                <label class="form-check-label fw-semibold" for="ocupada">
+            
+            <div class="mt-2">
+                <input class="form-check-input" asp-for="Ocupada" disabled>
+                <label class="form-check-label" for="Ocupada">
                     Ocupada
                 </label>
             </div>
-
 
             <div class="mt-2 d-grid gap-2 d-md-block">
                 <button class="btn btn-primary px-5">
