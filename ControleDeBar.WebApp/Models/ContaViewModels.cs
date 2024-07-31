@@ -37,7 +37,6 @@ public class ListarContaViewModel
     public string EstaAberta { get; set; }
     public DateTime Abertura { get; set; }
     public DateTime Fechamento { get; set; }
-    public IEnumerable<PedidoContaViewModel> Pedidos { get; set; }
 }
 
 public class DetalhesContaViewModel
@@ -52,16 +51,22 @@ public class DetalhesContaViewModel
     public IEnumerable<PedidoContaViewModel> Pedidos { get; set; }
 }
 
-public class GerenciarPedidosViewModel
-{
-    public ListarContaViewModel Conta { get; set; }
-    public IEnumerable<SelectListItem> Produtos { get; set; }
-}
-
 public class PedidoContaViewModel
 {
     public int Id { get; set; }
     public string Produto { get; set; }
     public int QuantidadeSolicitada { get; set; }
     public decimal TotalParcial { get; set; }
+}
+
+public class GerenciarPedidosViewModel
+{
+    public DetalhesContaViewModel Conta { get; set; }
+    public IEnumerable<SelectListItem> Produtos { get; set; }
+}
+
+public class AdicionarPedidoViewModel
+{
+    public int IdProduto { get; set; }
+    public int QuantidadeSolicitada { get; set; }
 }

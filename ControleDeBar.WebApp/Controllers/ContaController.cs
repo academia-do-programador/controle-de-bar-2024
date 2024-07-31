@@ -145,7 +145,7 @@ public class ContaController : Controller
 
     [HttpPost]
     [Route("/conta/{id:int}/adicionar-pedido")]
-    public ViewResult AdicionarPedido(int id, int idProduto, int quantidadeSolicitada)
+    public ViewResult AdicionarPedido(int id, AdicionarPedidoViewModel adicionarPedidoVm)
     {
         var db = new ControleDeBarDbContext();
 
@@ -155,9 +155,12 @@ public class ContaController : Controller
         var contaSelecionada = repositorioConta.SelecionarPorId(id);
         
         var produtoSelecionado = repositorioProduto
-            .SelecionarPorId(idProduto);
+            .SelecionarPorId(adicionarPedidoVm.IdProduto);
 
-        contaSelecionada.RegistrarPedido(produtoSelecionado, quantidadeSolicitada);
+        contaSelecionada.RegistrarPedido(
+            produtoSelecionado,
+            adicionarPedidoVm.QuantidadeSolicitada
+        );
 
         repositorioConta.AtualizarPedidos(contaSelecionada, []);
 
@@ -212,9 +215,9 @@ public class ContaController : Controller
         };
     }
     
-    private static ListarContaViewModel MapearDetalhesContaViewModel(Conta c)
+    private static DetalhesContaViewModel MapearDetalhesContaViewModel(Conta c)
     {
-        return new ListarContaViewModel
+        return new DetalhesContaViewModel
         {
             Id = c.Id,
             Titular = c.Titular,
