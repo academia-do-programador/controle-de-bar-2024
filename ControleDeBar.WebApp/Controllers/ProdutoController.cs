@@ -16,7 +16,9 @@ public class ProdutoController : Controller
         var produtos = repositorioProduto.SelecionarTodos();
 
         var listarProdutosVm = produtos
-            .Select(p => new ListarProdutoViewModel { Id = p.Id, Nome = p.Nome, Valor = p.Valor });
+            .Select(p => 
+                new ListarProdutoViewModel { Id = p.Id, Nome = p.Nome, Valor = p.Valor }
+            );
 
         return View(listarProdutosVm);
     }
@@ -44,6 +46,7 @@ public class ProdutoController : Controller
             Mensagem = $"O registro com o ID [{produto.Id}] foi inserido com sucesso!",
             LinkRedirecionamento =  "/produto/listar"
         };
+
         HttpContext.Response.StatusCode = 201;
 
         return View("mensagens", notificacaoVm);
